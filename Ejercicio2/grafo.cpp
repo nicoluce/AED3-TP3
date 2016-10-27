@@ -8,6 +8,15 @@ Grafo::Grafo(unsigned int cantidad_gimnasios, unsigned int cantidad_pokeparadas)
 	// .reserve() sirve para agrandar el espacio del vector, asi evitamos problemas de resize.
 	this->_pokeparadas.reserve(cantidad_pokeparadas); 
 	this->_gimnasios.reserve(cantidad_gimnasios);
+
+
+	// cout << "_pokeparadas.size = " << _pokeparadas.size() << endl;
+	// cout << "_pokeparadas.capacity = " << _pokeparadas.capacity() << endl;
+
+	// cout << "_gimnasios.size = " << _gimnasios.size() << endl;
+	// cout << "_gimnasios.capacity = " << _gimnasios.capacity() << endl;
+
+
 }
 
 unsigned int Grafo::agregar_pokeparada(const Posicion& pos) {

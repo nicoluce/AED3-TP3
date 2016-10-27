@@ -33,7 +33,6 @@ private:
 		// constructor de Nodo, toma todos los parametros que tiene y los asigna por copia. pociones y visitado tienen valores por default
 		Nodo(unsigned int id, Posicion pos, Tipo tipo, bool visitado = false) : 
 			id(id), pos(pos), tipo(tipo), 
-			pociones_necesarias(pociones), 
 			visitado(visitado)
 		{};
 
