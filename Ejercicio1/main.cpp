@@ -3,26 +3,12 @@
 
 #include <iostream>
 #include <string>
-#include <sstream>
-#include <stdlib.h>
 #include <stdio.h>
 
 #include "grafo.h"
-// #include "../Auxiliares/auxiliares.h"
+#include "../Auxiliares/auxiliares.h"
 
 using namespace std;
-
-
-vector<int> split(const string &s, char delim) {
-	vector<int> elems;
-	stringstream ss;
-	ss.str(s);
-	string item;
-	while (getline(ss, item, delim)) {
-		elems.push_back(atoi(item.c_str()));
-	}
-	return elems;
-}
 
 void parseo_entrada(Grafo& g, int n, int m) {
 	string buffer;
@@ -51,6 +37,8 @@ int main(int argc, char const *argv[]) {
 	int cantidad_gimnasios = entrada_parseada[0];
 	int cantidad_paradas = entrada_parseada[1];
 	int capacidad_mochila = entrada_parseada[2];
+
+	cout << capacidad_mochila << endl;
 	
 	Grafo g(cantidad_gimnasios + cantidad_paradas);
 	parseo_entrada(g, cantidad_gimnasios, cantidad_paradas);
