@@ -32,7 +32,7 @@ int main(int argc, char const *argv[]) {
 	string primera_linea;
 	getline(cin, primera_linea, '\n');
 
-	vector<int>entrada_parseada (split(primera_linea, ' '));
+	vector<int>entrada_parseada (split(primera_linea, ' ')); // parseo de la primera linea de la entrada
 
 	int cantidad_gimnasios = entrada_parseada[0];
 	int cantidad_paradas = entrada_parseada[1];

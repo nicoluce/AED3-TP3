@@ -40,7 +40,7 @@ int main(int argc, char const *argv[]) {
 
 	cout << capacidad_mochila << endl;
 	
-	Grafo g(cantidad_gimnasios + cantidad_paradas);
+	Grafo g(cantidad_gimnasios, cantidad_paradas);
 	parseo_entrada(g, cantidad_gimnasios, cantidad_paradas);
 	
 	g.imprimir();
