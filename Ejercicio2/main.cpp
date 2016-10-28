@@ -43,7 +43,7 @@ int main(int argc, char const *argv[]) {
 	Grafo g(cantidad_gimnasios, cantidad_paradas);
 	parseo_entrada(g, cantidad_gimnasios, cantidad_paradas);
 	
-	g.imprimir();
+	//g.imprimir();
 
 	return 0;
 }

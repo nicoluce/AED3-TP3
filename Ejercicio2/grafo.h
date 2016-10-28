@@ -8,12 +8,14 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>  
 
 using namespace std;
 
 typedef double Distancia;
 typedef pair<unsigned int, unsigned int> Posicion;
 enum Tipo { Gimnasio, Pokeparada };
+
 
 class Grafo {
 public:
@@ -26,14 +28,18 @@ public:
 
 	const void imprimir(); // imprime el grafo
 
-	vector<int> tsp_goloso(unsigned int primer_nodo_id, unsigned int capacidad_mochila); // devuelve la solucion como pide el enunciado, o un solo elemento (-1) si no hay solucion
+	unsigned int buscarPociones(int mochila, unsigned int capacidad_mochila, Posicion desde);
+	vector<unsigned int> tsp_goloso(unsigned int primer_nodo_id, unsigned int capacidad_mochila); // devuelve la solucion como pide el enunciado, o un solo elemento (-1) si no hay solucion
 
 private:
 	struct Nodo {
 		// constructor de Nodo, toma todos los parametros que tiene y los asigna por copia. pociones y visitado tienen valores por default
+		Nodo() : id(0), tipo(Gimnasio), visitado(false)
+		{};
+		
 		Nodo(unsigned int id, Posicion pos, Tipo tipo, bool visitado = false) : 
 			id(id), pos(pos), tipo(tipo), 
-			pociones_necesarias(pociones), 
+			//pociones_necesarias(pociones), 
 			visitado(visitado)
 		{};
 
@@ -57,8 +63,19 @@ private:
 
 	void gimnasios_make_heap(); // la idea es que tsp_goloso() llame a esta funcion al principio (o podría directamente hacer él el make_heap())
 
+	int mochila;
 	vector<Nodo> _pokeparadas; // vector de Pokeparadas
-	vector<NodoGimnasio> _gimnasios; // se usaría como heap
+	//vector<NodoGimnasio> _gimnasios2; // no se si hace falta.
+
+
+	struct comparacion{
+	public:
+		bool operator()(NodoGimnasio a, NodoGimnasio b){
+			return a.pociones_necesarias<b.pociones_necesarias;
+		}
+	};
+
+	priority_queue<NodoGimnasio, vector<NodoGimnasio>, comparacion> _gimnasios;		
 
 };
 
