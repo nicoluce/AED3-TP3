@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include <vector>
-#include <queue>  
+#include <queue>
 
 using namespace std;
 
@@ -16,6 +16,13 @@ typedef double Distancia;
 typedef pair<unsigned int, unsigned int> Posicion;
 enum Tipo { Gimnasio, Pokeparada };
 
+struct Solucion {
+	Solucion() : distancia_recorrida(0), ids(vector<unsigned int>())
+	{}
+
+	Distancia distancia_recorrida;
+	vector<unsigned int> ids;
+};
 
 class Grafo {
 public:
@@ -24,25 +31,21 @@ public:
 	unsigned int agregar_pokeparada(const Posicion& pos); // devuelve el id del nodo
 	unsigned int agregar_gimnasio(const Posicion& pos, unsigned int pociones); // devuelve el id del nodo
 
-	const double distancia(const Posicion& p1, const Posicion& p2); // mide la distancia euclidea entre dos posiciones
+	const Distancia distancia(const Posicion& p1, const Posicion& p2); // mide la distancia euclidea entre dos posiciones
 
 	const void imprimir(); // imprime el grafo
 
-	unsigned int buscarPociones(int mochila, unsigned int capacidad_mochila, Posicion desde);
-	vector<unsigned int> tsp_goloso(unsigned int primer_nodo_id, unsigned int capacidad_mochila); // devuelve la solucion como pide el enunciado, o un solo elemento (-1) si no hay solucion
+	int buscarPociones(int mochila, unsigned int capacidad_mochila, Posicion desde, vector<bool>& visitados);
+	Solucion tsp_goloso(unsigned int primer_nodo_id, unsigned int capacidad_mochila); // devuelve la solucion como pide el enunciado, o un solo elemento (-1) si no hay solucion
 
 private:
 	struct Nodo {
 		// constructor de Nodo, toma todos los parametros que tiene y los asigna por copia. pociones y visitado tienen valores por default
-		Nodo() : id(0), tipo(Gimnasio), visitado(false)
+		Nodo() : id(0), tipo(Gimnasio)
 		{};
 		
-		Nodo(unsigned int id, Posicion pos, Tipo tipo, bool visitado = false) : 
-			id(id), pos(pos), tipo(tipo), 
-
-			//pociones_necesarias(pociones), 
-
-			visitado(visitado)
+		Nodo(unsigned int id, Posicion pos, Tipo tipo) : 
+			id(id), pos(pos), tipo(tipo)
 		{};
 
 		unsigned int id; // id del nodo
@@ -52,12 +55,12 @@ private:
 	};
 
 	struct NodoGimnasio : public Nodo {
-		NodoGimnasio(unsigned int id, Posicion pos, Tipo tipo, unsigned int pociones = 0, bool visitado = false) : 
-			Nodo(id, pos, tipo, visitado), pociones_necesarias(pociones)
+		NodoGimnasio(unsigned int id, Posicion pos, Tipo tipo, unsigned int pociones = 0) : 
+			Nodo(id, pos, tipo), pociones_necesarias(pociones)
 		{}
 
-		bool operator<(const NodoGimnasio& otro) { // necesario para hacer el heap
-			return (this->pociones_necesarias < otro.pociones_necesarias);	
+	 	bool const operator>(const NodoGimnasio& otro) const { // necesario para hacer el heap
+			return (this->pociones_necesarias > otro.pociones_necesarias);	
 		}
 
 		unsigned int pociones_necesarias; // Solo para Gimnasios, pociones necesarias para ganar el gimnasio
@@ -67,17 +70,8 @@ private:
 
 	int mochila;
 	vector<Nodo> _pokeparadas; // vector de Pokeparadas
+	vector<NodoGimnasio> _gimnasios;
 	//vector<NodoGimnasio> _gimnasios2; // no se si hace falta.
-
-
-	struct comparacion{
-	public:
-		bool operator()(NodoGimnasio a, NodoGimnasio b){
-			return a.pociones_necesarias<b.pociones_necesarias;
-		}
-	};
-
-	priority_queue<NodoGimnasio, vector<NodoGimnasio>, comparacion> _gimnasios;		
 
 };
 

@@ -38,11 +38,24 @@ int main(int argc, char const *argv[]) {
 	int cantidad_paradas = entrada_parseada[1];
 	int capacidad_mochila = entrada_parseada[2];
 
-	cout << capacidad_mochila << endl;
+	// cout << capacidad_mochila << endl;
 	
 	Grafo g(cantidad_gimnasios, cantidad_paradas);
 	parseo_entrada(g, cantidad_gimnasios, cantidad_paradas);
+
 	
+	for (int i = 0; i < cantidad_paradas; i++) {
+			
+		Solucion res = g.tsp_goloso(i, capacidad_mochila);
+
+		if (res.ids.empty()) cout << -1 << endl;
+		else {
+			cout << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';
+			imprimir_vector(res.ids);
+		}
+	}
+
+
 	//g.imprimir();
 
 	return 0;
