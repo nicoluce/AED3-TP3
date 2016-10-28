@@ -91,12 +91,11 @@ int Grafo::buscarPociones(int mochila, unsigned int capacidad_mochila, Posicion 
 		}
 		i++;
 	}
-
 	return res;
 }
 
 // para imprimir el grafo, puede ser util
-/*const void Grafo::imprimir() {
+const void Grafo::imprimir() {
 	cout << "{ \n";
 	for (unsigned int i = 0; i < this->_gimnasios.size(); i++) {
 		cout << "	" << this->_gimnasios[i].id;
@@ -112,4 +111,4 @@ int Grafo::buscarPociones(int mochila, unsigned int capacidad_mochila, Posicion 
 		cout << "<" << this->_pokeparadas[i].pos.first << ", " << this->_pokeparadas[i].pos.second << ">\n";
 	}
 	cout << "}" << endl;
-}*/
+}

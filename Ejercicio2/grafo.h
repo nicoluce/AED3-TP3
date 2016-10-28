@@ -51,7 +51,6 @@ private:
 		unsigned int id; // id del nodo
 		Posicion pos; // posicion en el mapa
 		Tipo tipo; // tipo: Gimnasio o Pokeparada
-		bool visitado;
 	};
 
 	struct NodoGimnasio : public Nodo {
@@ -66,13 +65,8 @@ private:
 		unsigned int pociones_necesarias; // Solo para Gimnasios, pociones necesarias para ganar el gimnasio
 	};
 
-	void gimnasios_make_heap(); // la idea es que tsp_goloso() llame a esta funcion al principio (o podría directamente hacer él el make_heap())
-
-	int mochila;
 	vector<Nodo> _pokeparadas; // vector de Pokeparadas
 	vector<NodoGimnasio> _gimnasios;
-	//vector<NodoGimnasio> _gimnasios2; // no se si hace falta.
-
 };
 
 #endif 
