@@ -10,8 +10,10 @@
 Grafo::Grafo(unsigned int cantidad_gimnasios, unsigned int cantidad_pokeparadas) {
 	// .reserve() sirve para agrandar el espacio del vector, asi evitamos problemas de resize.
 	this->_pokeparadas.reserve(cantidad_pokeparadas); 
+
 	priority_queue< Grafo::NodoGimnasio, vector<Grafo::NodoGimnasio>, Grafo::comparacion> cola;	
 	this->_gimnasios = 	cola;	
+
 
 }
 

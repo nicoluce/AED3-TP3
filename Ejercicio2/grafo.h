@@ -39,7 +39,9 @@ private:
 		
 		Nodo(unsigned int id, Posicion pos, Tipo tipo, bool visitado = false) : 
 			id(id), pos(pos), tipo(tipo), 
+
 			//pociones_necesarias(pociones), 
+
 			visitado(visitado)
 		{};
 
