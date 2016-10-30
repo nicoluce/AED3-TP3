@@ -1,5 +1,7 @@
 #include <math.h>
 #include <utility>
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <stdlib.h> 
 #include <algorithm>
 
 #include "grafo.h"
@@ -32,10 +34,11 @@ const Distancia Grafo::distancia(const Posicion& p1, const Posicion& p2) {
 }
 
 // Donde va la magia
-Solucion Grafo::tsp_goloso(unsigned int primer_nodo_id, unsigned int capacidad_mochila) {
+Solucion Grafo::tsp_goloso(unsigned int opcion_primer_nodo, unsigned int capacidad_mochila) {
 	priority_queue<NodoGimnasio, vector<NodoGimnasio>, greater<NodoGimnasio> > heapnasios (_gimnasios.begin(), _gimnasios.end());
 	vector<bool> visitados(_pokeparadas.size(), false);
 
+	unsigned int primer_nodo_id = elegirPrimerNodo(opcion_primer_nodo);
 	unsigned int pociones_en_mochila = 0;
 	Solucion res;
 
@@ -58,7 +61,7 @@ Solucion Grafo::tsp_goloso(unsigned int primer_nodo_id, unsigned int capacidad_m
 			heapnasios.pop();
 		}
 
-		int indice_pokeparada_mas_cercana = buscarPociones(pociones_en_mochila, capacidad_mochila, posicion_actual, visitados);
+		int indice_pokeparada_mas_cercana = buscarPociones(pociones_en_mochila,posicion_actual, visitados);
 
 		if (indice_pokeparada_mas_cercana == -1) {
 			res.ids.clear();
@@ -79,7 +82,7 @@ Solucion Grafo::tsp_goloso(unsigned int primer_nodo_id, unsigned int capacidad_m
 	return res;
 }
 
-int Grafo::buscarPociones(int mochila, unsigned int capacidad_mochila, Posicion desde, vector<bool>& visitados){
+int Grafo::buscarPociones(int mochila, Posicion desde, vector<bool>& visitados){
 	Distancia min = INF;
 
 	int res = -1;
@@ -92,6 +95,51 @@ int Grafo::buscarPociones(int mochila, unsigned int capacidad_mochila, Posicion 
 		i++;
 	}
 	return res;
+}
+
+
+unsigned int Grafo::elegirPrimerNodo(unsigned int opcion){
+	unsigned int res;
+	switch (opcion) {
+		case 1:
+		srand (time(NULL));
+		res = (unsigned int) rand() % _pokeparadas.size() + _pokeparadas.size();
+		break;
+
+		case 2:
+		unsigned int min = INF;
+		NodoGimnasio gym = _gimnasios[0];
+		for (unsigned int i = 0; i < _gimnasios.size(); ++i){
+			if(_gimnasios[i].pociones_necesarias < min ){
+				gym = _gimnasios[i];
+				min = _gimnasios[i].pociones_necesarias;
+			}
+		}
+
+		unsigned int pociones = 0;
+		vector<unsigned int> paradas;
+		double mini = INF;
+		Posicion desde = gym.pos;
+		Nodo parada;
+		while(pociones < gym.pociones_necesarias){
+			mini = INF;
+			for (unsigned int i = 0; i < _pokeparadas.size(); ++i){
+				if(distancia(_pokeparadas[i].pos, desde) < mini && desde!= _pokeparadas[i].pos){
+					mini = distancia(_pokeparadas[i].pos, desde);
+					parada = _pokeparadas[i];
+				}
+			desde = parada.pos;
+			}
+			pociones +=3;
+		}
+		res = parada.id;
+		break;
+
+	}
+
+	cout<< "ANDA" << endl;
+	return res;
+
 }
 
 // para imprimir el grafo, puede ser util

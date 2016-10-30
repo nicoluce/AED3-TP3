@@ -35,8 +35,9 @@ public:
 
 	const void imprimir(); // imprime el grafo
 
-	int buscarPociones(int mochila, unsigned int capacidad_mochila, Posicion desde, vector<bool>& visitados);
-	Solucion tsp_goloso(unsigned int primer_nodo_id, unsigned int capacidad_mochila); // devuelve la solucion como pide el enunciado, o un solo elemento (-1) si no hay solucion
+	int buscarPociones(int mochila, Posicion desde, vector<bool>& visitados);
+	unsigned int elegirPrimerNodo(unsigned int opcion);
+	Solucion tsp_goloso(unsigned int opcion_primer_nodo, unsigned int capacidad_mochila); // devuelve la solucion como pide el enunciado, o un solo elemento (-1) si no hay solucion
 
 private:
 	struct Nodo {

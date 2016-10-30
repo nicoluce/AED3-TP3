@@ -43,17 +43,17 @@ int main(int argc, char const *argv[]) {
 	Grafo g(cantidad_gimnasios, cantidad_paradas);
 	parseo_entrada(g, cantidad_gimnasios, cantidad_paradas);
 
-	
-	for (int i = 0; i < cantidad_paradas; i++) {
+	cout<< "hola"<< endl;
+	//for (int i = 0; i < cantidad_paradas; i++) {
 			
-		Solucion res = g.tsp_goloso(i, capacidad_mochila);
+		Solucion res = g.tsp_goloso(2, capacidad_mochila);
 
 		if (res.ids.empty()) cout << -1 << endl;
 		else {
 			cout << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';
 			imprimir_vector(res.ids);
 		}
-	}
+	//}
 
 
 	//g.imprimir();
