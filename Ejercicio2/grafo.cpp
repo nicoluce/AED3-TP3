@@ -38,18 +38,20 @@ Solucion Grafo::tsp_goloso(unsigned int opcion_primer_nodo, unsigned int capacid
 	priority_queue<NodoGimnasio, vector<NodoGimnasio>, greater<NodoGimnasio> > heapnasios (_gimnasios.begin(), _gimnasios.end());
 	vector<bool> visitados(_pokeparadas.size(), false);
 
-	unsigned int primer_nodo_id = elegirPrimerNodo(opcion_primer_nodo);
+	unsigned int primer_nodo_indice = elegirPrimerNodo(opcion_primer_nodo);
 	unsigned int pociones_en_mochila = 0;
 	Solucion res;
 
-	visitados[primer_nodo_id] = true;
-	Posicion posicion_actual = _pokeparadas[primer_nodo_id].pos;
+	visitados[primer_nodo_indice] = true;
+	Posicion posicion_actual = _pokeparadas[primer_nodo_indice].pos;
 
 	if (capacidad_mochila >= 3) pociones_en_mochila += 3;
 	else pociones_en_mochila = capacidad_mochila;
 
-	res.ids.push_back(_pokeparadas[primer_nodo_id].id);
-
+	cout<< "ID" << primer_nodo_indice << endl;
+	cout << "ID DESPUES DE ENTRAR AL ARREGLO " << _pokeparadas[primer_nodo_indice].id << endl;
+	res.ids.push_back(_pokeparadas[primer_nodo_indice].id);
+	//res.ids.push_back(primer_nodo_indice);
 	while(heapnasios.size() > 0) {
 		while(pociones_en_mochila >= heapnasios.top().pociones_necesarias) {
 			NodoGimnasio gym = heapnasios.top();
@@ -103,7 +105,9 @@ unsigned int Grafo::elegirPrimerNodo(unsigned int opcion){
 	switch (opcion) {
 		case 1:
 		srand (time(NULL));
-		res = (unsigned int) rand() % _pokeparadas.size() + _pokeparadas.size();
+		cout << "SIZE" << _pokeparadas.size();
+		res = (unsigned int) rand() % _pokeparadas.size();// + _pokeparadas.size();
+		cout<< "parada es " << res << endl;
 		break;
 
 		case 2:
@@ -127,17 +131,17 @@ unsigned int Grafo::elegirPrimerNodo(unsigned int opcion){
 				if(distancia(_pokeparadas[i].pos, desde) < mini && desde!= _pokeparadas[i].pos){
 					mini = distancia(_pokeparadas[i].pos, desde);
 					parada = _pokeparadas[i];
+					res = i;
 				}
 			desde = parada.pos;
 			}
 			pociones +=3;
 		}
-		res = parada.id;
+
 		break;
 
 	}
 
-	cout<< "ANDA" << endl;
 	return res;
 
 }

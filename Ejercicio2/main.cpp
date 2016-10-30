@@ -43,7 +43,6 @@ int main(int argc, char const *argv[]) {
 	Grafo g(cantidad_gimnasios, cantidad_paradas);
 	parseo_entrada(g, cantidad_gimnasios, cantidad_paradas);
 
-	cout<< "hola"<< endl;
 	//for (int i = 0; i < cantidad_paradas; i++) {
 			
 		Solucion res = g.tsp_goloso(2, capacidad_mochila);
