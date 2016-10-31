@@ -37,13 +37,27 @@ int main(int argc, char const *argv[]) {
 	int cantidad_gimnasios = entrada_parseada[0];
 	int cantidad_paradas = entrada_parseada[1];
 	int capacidad_mochila = entrada_parseada[2];
-
-	cout << capacidad_mochila << endl;
 	
 	Grafo g(cantidad_gimnasios + cantidad_paradas);
 	parseo_entrada(g, cantidad_gimnasios, cantidad_paradas);
 	
-	g.imprimir();
+	Solucion res = g.tsp_backtracking(capacidad_mochila);
+
+	if (res.no_es_solucion) cout << -1 << endl;
+	else {
+		cout << fixed << setprecision(2);
+		cout << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';
+		imprimir_vector(res.ids);
+	}
+
+	Distancia d = 0;
+	for (unsigned int i = 1; i < res.ids.size(); i++) {
+		d += g.distancia(g._nodos[res.ids[i]-1].pos, g._nodos[res.ids[i-1]-1].pos);
+	}
+
+	cout << d << endl;
+
+	// g.imprimir();
 
 	return 0;
 }

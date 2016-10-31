@@ -30,7 +30,7 @@ Hacer header del tipo grafo, todos son grafos completos, único para todo el tp.
 - podas:
 	- la suma de pokeparadas*3 + mochila >= al costo de todos los gimnasios restantes
 	- si estas en un gimnasio y no te dan las pociones, cortá. (revisar)
-	- Si tenes la mochila llena no vale la pena pasar por pokeparadas (backtracking)
+
 
 Nodo:
 	- tipo, gimnasio o pokeparada
@@ -38,6 +38,9 @@ Nodo:
 	- posicion
 	- visitado
 	- id
+
+
+- Si tenes la mochila llena no vale la pena pasar por pokeparadas (backtracking)
 
 ------------------------------------------------------------------------------
 
