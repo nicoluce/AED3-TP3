@@ -43,19 +43,14 @@ int main(int argc, char const *argv[]) {
 	
 	Solucion res = g.tsp_backtracking(capacidad_mochila);
 
-	if (res.no_es_solucion) cout << -1 << endl;
+	if (res.distancia_recorrida == -1) cout << -1 << endl;
 	else {
 		cout << fixed << setprecision(2);
 		cout << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';
 		imprimir_vector(res.ids);
 	}
 
-	Distancia d = 0;
-	for (unsigned int i = 1; i < res.ids.size(); i++) {
-		d += g.distancia(g._nodos[res.ids[i]-1].pos, g._nodos[res.ids[i-1]-1].pos);
-	}
-
-	cout << d << endl;
+	cout << recursiones << ' ' << podas << ' ' << soluciones << endl;
 
 	// g.imprimir();
 
