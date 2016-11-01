@@ -41,7 +41,6 @@ def generar_random(cantidad_de_gimnasios, cantidad_de_pokeparadas, capacidad_moc
 	else:
 		output = sys.stdout
 
-
 	posiciones = []
 
 	out_string = str(cantidad_de_gimnasios) + ' ' + str(cantidad_de_pokeparadas) + ' ' + str(capacidad_mochila) + '\n'
