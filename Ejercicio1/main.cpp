@@ -64,6 +64,7 @@ int main(int argc, char const *argv[]) {
 		}
 
 		if (medir  == "-m") {
+			cout << "Grafo: " << cantidad_gimnasios << ' ' << cantidad_paradas << ' ' << capacidad_mochila << endl;
 			cout << "Data: " << recursiones << ' ' << podas << ' ' << soluciones << endl;
 			cout << fixed << setprecision(0);
 			cout << "Tiempo: " << chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count() << endl;
