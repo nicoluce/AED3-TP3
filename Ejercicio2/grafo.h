@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <vector>
+#include <iomanip>
 #include <queue>
 
 using namespace std;
@@ -36,7 +37,7 @@ public:
 	const void imprimir(); // imprime el grafo
 
 	int buscarPociones(int mochila, Posicion desde, vector<bool>& visitados);
-	unsigned int elegirPrimerNodo(unsigned int opcion);
+	unsigned int elegirPrimerNodo(int opcion);
 	Solucion tsp_goloso(unsigned int opcion_primer_nodo, unsigned int capacidad_mochila); // devuelve la solucion como pide el enunciado, o un solo elemento (-1) si no hay solucion
 
 private:

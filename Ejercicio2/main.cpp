@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <stdio.h>
+#include <chrono>
 
 #include "grafo.h"
 #include "../Auxiliares/auxiliares.h"
@@ -27,8 +28,16 @@ void parseo_entrada(Grafo& g, int n, int m) {
 	}
 }
 
+#define ya chrono::high_resolution_clock::now
+
 int main(int argc, char const *argv[]) {
-	
+	int repeticiones = 1;
+	string medir;
+
+	int opcion = atoi(argv[1]);
+	if (argc > 2) medir = argv[2];
+	if (argc > 3) repeticiones = atoi(argv[3]);
+
 	string primera_linea;
 	getline(cin, primera_linea, '\n');
 
@@ -42,20 +51,25 @@ int main(int argc, char const *argv[]) {
 	
 	Grafo g(cantidad_gimnasios, cantidad_paradas);
 	parseo_entrada(g, cantidad_gimnasios, cantidad_paradas);
-
-	//for (int i = 0; i < cantidad_paradas; i++) {
-			
-		Solucion res = g.tsp_goloso(2, capacidad_mochila);
+	
+	for (int i = 0; i < repeticiones; ++i) {
+		cerr << "[Corriendo repeticion " << i+1 << ']' << endl;
+		auto start = ya();
+		Solucion res = g.tsp_goloso(opcion, capacidad_mochila);
+		auto end = ya();
 
 		if (res.ids.empty()) cout << -1 << endl;
 		else {
+			cout << fixed << setprecision(2);
 			cout << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';
 			imprimir_vector(res.ids);
 		}
-	//}
-
-
-	//g.imprimir();
-
+		
+		if (medir  == "-m") {
+			cout << "Grafo: " << cantidad_gimnasios << ' ' << cantidad_paradas << ' ' << capacidad_mochila << endl;
+			cout << fixed << setprecision(0);
+			cout << "Tiempo: " << chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count() << endl;
+		}
+	}
 	return 0;
 }

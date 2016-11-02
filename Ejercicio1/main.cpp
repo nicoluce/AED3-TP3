@@ -5,6 +5,7 @@
 #include <string>
 #include <stdio.h>
 #include <chrono>
+#include <utility>
 
 #include "grafo.h"
 #include "../Auxiliares/auxiliares.h"
@@ -64,6 +65,11 @@ int main(int argc, char const *argv[]) {
 		}
 
 		if (medir  == "-m") {
+			cout << '[';
+			for (unsigned int i = 0; i < res.ids.size(); i++) {
+				cout << '(' << get<0>(g._nodos[res.ids[i]-1].pos) << ", " << get<1>(g._nodos[res.ids[i]-1].pos) << "), ";
+			}
+			cout << ']' << endl;
 			cout << "Grafo: " << cantidad_gimnasios << ' ' << cantidad_paradas << ' ' << capacidad_mochila << endl;
 			cout << "Data: " << recursiones << ' ' << podas << ' ' << soluciones << endl;
 			cout << fixed << setprecision(0);

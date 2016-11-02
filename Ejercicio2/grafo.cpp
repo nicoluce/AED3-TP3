@@ -4,6 +4,7 @@
 #include <stdlib.h> 
 #include <algorithm>
 
+#include "../Auxiliares/auxiliares.h"
 #include "grafo.h"
 
 #define INF 99999999
@@ -48,8 +49,8 @@ Solucion Grafo::tsp_goloso(unsigned int opcion_primer_nodo, unsigned int capacid
 	if (capacidad_mochila >= 3) pociones_en_mochila += 3;
 	else pociones_en_mochila = capacidad_mochila;
 
-	cout<< "ID" << primer_nodo_indice << endl;
-	cout << "ID DESPUES DE ENTRAR AL ARREGLO " << _pokeparadas[primer_nodo_indice].id << endl;
+	// cout<< "ID" << primer_nodo_indice << endl;
+	// cout << "ID DESPUES DE ENTRAR AL ARREGLO " << _pokeparadas[primer_nodo_indice].id << endl;
 	res.ids.push_back(_pokeparadas[primer_nodo_indice].id);
 	//res.ids.push_back(primer_nodo_indice);
 	while(heapnasios.size() > 0) {
@@ -63,33 +64,35 @@ Solucion Grafo::tsp_goloso(unsigned int opcion_primer_nodo, unsigned int capacid
 			heapnasios.pop();
 		}
 
-		int indice_pokeparada_mas_cercana = buscarPociones(pociones_en_mochila,posicion_actual, visitados);
+		if (!heapnasios.empty()) {
+			int indice_pokeparada_mas_cercana = buscarPociones(pociones_en_mochila,posicion_actual, visitados);
 
-		if (indice_pokeparada_mas_cercana == -1) {
-			res.ids.clear();
-			return res;
+			if (indice_pokeparada_mas_cercana == -1) {
+				res.ids.clear();
+				return res;
+			}
+
+			res.distancia_recorrida += distancia(_pokeparadas[indice_pokeparada_mas_cercana].pos, posicion_actual);
+			posicion_actual = _pokeparadas[indice_pokeparada_mas_cercana].pos;
+			
+			visitados[indice_pokeparada_mas_cercana] = true;
+			
+			if (pociones_en_mochila + 3 <= capacidad_mochila) pociones_en_mochila += 3;
+			else pociones_en_mochila = capacidad_mochila;
+
+			res.ids.push_back(_pokeparadas[indice_pokeparada_mas_cercana].id);
 		}
-
-		res.distancia_recorrida += distancia(_pokeparadas[indice_pokeparada_mas_cercana].pos, posicion_actual);
-		posicion_actual = _pokeparadas[indice_pokeparada_mas_cercana].pos;
-		
-		visitados[indice_pokeparada_mas_cercana] = true;
-		
-		if (pociones_en_mochila + 3 <= capacidad_mochila) pociones_en_mochila += 3;
-		else pociones_en_mochila = capacidad_mochila;
-
-		res.ids.push_back(_pokeparadas[indice_pokeparada_mas_cercana].id);
 	}
 
 	return res;
 }
 
-int Grafo::buscarPociones(int mochila, Posicion desde, vector<bool>& visitados){
+int Grafo::buscarPociones(int mochila, Posicion desde, vector<bool>& visitados) {
 	Distancia min = INF;
 
 	int res = -1;
 	unsigned int i = 0;
-	while (i < this->_pokeparadas.size()){
+	while (i < this->_pokeparadas.size()) {
 		if(!(visitados[i]) && distancia(this->_pokeparadas[i].pos, desde) < min){
 			min = distancia(this->_pokeparadas[i].pos, desde);
 			res = i;
@@ -99,47 +102,45 @@ int Grafo::buscarPociones(int mochila, Posicion desde, vector<bool>& visitados){
 	return res;
 }
 
-
-unsigned int Grafo::elegirPrimerNodo(unsigned int opcion){
+unsigned int Grafo::elegirPrimerNodo(int opcion){
 	unsigned int res;
 	switch (opcion) {
+		case 0:
+			srand (time(NULL));
+			// cout << "SIZE" << _pokeparadas.size();
+			res = (unsigned int) rand() % _pokeparadas.size();// + _pokeparadas.size();
+			// cout<< "parada es " << res << endl;
+			break;
+
 		case 1:
-		srand (time(NULL));
-		cout << "SIZE" << _pokeparadas.size();
-		res = (unsigned int) rand() % _pokeparadas.size();// + _pokeparadas.size();
-		cout<< "parada es " << res << endl;
-		break;
-
-		case 2:
-		unsigned int min = INF;
-		NodoGimnasio gym = _gimnasios[0];
-		for (unsigned int i = 0; i < _gimnasios.size(); ++i){
-			if(_gimnasios[i].pociones_necesarias < min ){
-				gym = _gimnasios[i];
-				min = _gimnasios[i].pociones_necesarias;
-			}
-		}
-
-		unsigned int pociones = 0;
-		vector<unsigned int> paradas;
-		double mini = INF;
-		Posicion desde = gym.pos;
-		Nodo parada;
-		while(pociones < gym.pociones_necesarias){
-			mini = INF;
-			for (unsigned int i = 0; i < _pokeparadas.size(); ++i){
-				if(distancia(_pokeparadas[i].pos, desde) < mini && desde!= _pokeparadas[i].pos){
-					mini = distancia(_pokeparadas[i].pos, desde);
-					parada = _pokeparadas[i];
-					res = i;
+			unsigned int min = INF;
+			NodoGimnasio gym = _gimnasios[0];
+			for (unsigned int i = 0; i < _gimnasios.size(); ++i){
+				if(_gimnasios[i].pociones_necesarias < min ){
+					gym = _gimnasios[i];
+					min = _gimnasios[i].pociones_necesarias;
 				}
-			desde = parada.pos;
 			}
-			pociones +=3;
-		}
+
+			unsigned int pociones = 0;
+			vector<unsigned int> paradas;
+			double mini = INF;
+			Posicion desde = gym.pos;
+			Nodo parada;
+			while(pociones < gym.pociones_necesarias){
+				mini = INF;
+				for (unsigned int i = 0; i < _pokeparadas.size(); ++i){
+					if(distancia(_pokeparadas[i].pos, desde) < mini && desde!= _pokeparadas[i].pos){
+						mini = distancia(_pokeparadas[i].pos, desde);
+						parada = _pokeparadas[i];
+						res = i;
+					}
+				desde = parada.pos;
+				}
+				pociones +=3;
+			}
 
 		break;
-
 	}
 
 	return res;

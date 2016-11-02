@@ -44,7 +44,7 @@ public:
 	Solucion tsp_backtracking(unsigned int mochila); // devuelve la solucion como pide el enunciado, o un solo elemento (-1) si no hay solucion
 
 
-private:
+// private:
 
 	struct Nodo {
 		Nodo(unsigned int id, Posicion pos, Tipo tipo, unsigned int pociones = 0, bool visitado = false) : 

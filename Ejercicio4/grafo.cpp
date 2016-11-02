@@ -82,28 +82,29 @@ Solucion Grafo::tsp_goloso(unsigned int opcion_primer_nodo, unsigned int capacid
 
 			pociones_en_mochila -= gym.pociones_necesarias;
 
-			for (int i = 0; i < gyms.size(); ++i){
+			for (unsigned int i = 0; i < gyms.size(); ++i){
 				heapnasios.push(gyms[i]);
-			}
-				
-			}
-
-		int indice_pokeparada_mas_cercana = buscarPociones(pociones_en_mochila,posicion_actual, visitados);
-
-		if (indice_pokeparada_mas_cercana == -1) {
-			res.ids.clear();
-			return res;
+			}		
 		}
 
-		res.distancia_recorrida += distancia(_pokeparadas[indice_pokeparada_mas_cercana].pos, posicion_actual);
-		posicion_actual = _pokeparadas[indice_pokeparada_mas_cercana].pos;
-		
-		visitados[indice_pokeparada_mas_cercana] = true;
-		
-		if (pociones_en_mochila + 3 <= capacidad_mochila) pociones_en_mochila += 3;
-		else pociones_en_mochila = capacidad_mochila;
+		if (!heapnasios.empty()) {
+			int indice_pokeparada_mas_cercana = buscarPociones(pociones_en_mochila,posicion_actual, visitados);
 
-		res.ids.push_back(_pokeparadas[indice_pokeparada_mas_cercana].id);
+			if (indice_pokeparada_mas_cercana == -1) {
+				res.ids.clear();
+				return res;
+			}
+
+			res.distancia_recorrida += distancia(_pokeparadas[indice_pokeparada_mas_cercana].pos, posicion_actual);
+			posicion_actual = _pokeparadas[indice_pokeparada_mas_cercana].pos;
+			
+			visitados[indice_pokeparada_mas_cercana] = true;
+			
+			if (pociones_en_mochila + 3 <= capacidad_mochila) pociones_en_mochila += 3;
+			else pociones_en_mochila = capacidad_mochila;
+
+			res.ids.push_back(_pokeparadas[indice_pokeparada_mas_cercana].id);
+		}
 	}
 
 	return res;
