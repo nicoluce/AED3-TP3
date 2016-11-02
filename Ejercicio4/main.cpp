@@ -45,9 +45,8 @@ int main(int argc, char const *argv[]) {
 
 	//for (int i = 0; i < cantidad_paradas; i++) {
 			
-		Solucion res = g.tsp_goloso(2, capacidad_mochila, 4); // el primer parametro define como se elige el primer nodo,
+		Solucion res = g.tsp_goloso(1, capacidad_mochila, 4); // el primer parametro define como se elige el primer nodo,
 		//el tercero es la cantidad de gimnasios que toma del heap al hacer el random
-		srand(time(NULL));
 		if (res.ids.empty()) cout << -1 << endl;
 		else {
 			cout << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';

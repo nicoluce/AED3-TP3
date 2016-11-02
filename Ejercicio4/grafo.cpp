@@ -64,17 +64,18 @@ Solucion Grafo::tsp_goloso(unsigned int opcion_primer_nodo, unsigned int capacid
 				gyms.push_back(heapnasios.top());
 				heapnasios.pop();
 			}
-			// int indice_a_devolver = gyms.size() - 1;
-			// while(gyms[indice_a_devolver].pociones_necesarias > pociones_en_mochila){
-			// 	indice_a_devolver--;
-			// }
 
-			int indice_a_devolver = gyms.size() - 1;
-			while(gyms[indice_a_devolver].pociones_necesarias > pociones_en_mochila){
-				indice_a_devolver = rand() % gyms.size();
+			srand(time(NULL));
+			int j = rand() % hasta;
+
+			while(gyms[j].pociones_necesarias > pociones_en_mochila){
+				heapnasios.push(gyms[j]);
+				gyms.erase(gyms.begin() + j);
+				j = rand() % gyms.size();
 			}
 
-			NodoGimnasio gym = gyms[indice_a_devolver];
+			NodoGimnasio gym = gyms[j];
+			gyms.erase(gyms.begin() + j);
 			res.ids.push_back(gym.id);
 			res.distancia_recorrida += distancia(gym.pos, posicion_actual);
 			posicion_actual = gym.pos;
@@ -82,14 +83,10 @@ Solucion Grafo::tsp_goloso(unsigned int opcion_primer_nodo, unsigned int capacid
 			pociones_en_mochila -= gym.pociones_necesarias;
 
 			for (int i = 0; i < gyms.size(); ++i){
-				if(i != indice_a_devolver){
-					heapnasios.push(gyms[i]);
-				}
+				heapnasios.push(gyms[i]);
+			}
 				
 			}
-
-			
-		}
 
 		int indice_pokeparada_mas_cercana = buscarPociones(pociones_en_mochila,posicion_actual, visitados);
 
