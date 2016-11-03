@@ -1,13 +1,14 @@
 CC = g++
 CFLAGS = -g -Wall -Werror -std=c++11
 AUXDIR = ../Auxiliares
+EJ3DIR = ../Ejercicio3
 
-BINARIES = ejercicio4
+BINARIES = ej4.out
 
 all: $(BINARIES)
 
-ejercicio4: main.cpp grafo.o grafo.h auxiliares.o $(AUXDIR)/auxiliares.h	
-	$(CC) $(CFLAGS) main.cpp grafo.o auxiliares.o -o ej4.out
+$(BINARIES): main.cpp grafo.o grafo.h auxiliares.o $(AUXDIR)/auxiliares.h $(EJ3DIR)/camino.hpp
+	$(CC) $(CFLAGS) main.cpp grafo.o auxiliares.o -o $(BINARIES)
 
 grafo.o: grafo.cpp
 	$(CC) $(CFLAGS) -c $< -o $@

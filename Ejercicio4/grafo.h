@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <list>
 #include "../Auxiliares/auxiliares.h"
 
 using namespace std;

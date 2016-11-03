@@ -2,11 +2,11 @@ CC = g++
 CFLAGS = -g -Wall -Werror -std=c++11
 AUXDIR = ../Auxiliares
 
-BINARIES = ejercicio2
+BINARIES = ej2.out
 
 all: $(BINARIES)
 
-ejercicio2: main.cpp grafo.o grafo.h auxiliares.o $(AUXDIR)/auxiliares.h	
+$(BINARIES): main.cpp grafo.o grafo.h auxiliares.o $(AUXDIR)/auxiliares.h	
 	$(CC) $(CFLAGS) main.cpp grafo.o auxiliares.o -o ej2.out
 
 grafo.o: grafo.cpp

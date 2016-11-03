@@ -129,12 +129,12 @@ int Grafo::buscarPociones(int mochila, Posicion desde, vector<bool>& visitados){
 unsigned int Grafo::elegirPrimerNodo(unsigned int opcion){
 	unsigned int res;
 	switch (opcion) {
-		case 1:
+		case 0:
 		srand (time(NULL));
 		res = (unsigned int) rand() % _pokeparadas.size();// + _pokeparadas.size();
 		break;
 
-		case 2:
+		case 1:
 		unsigned int min = INF;
 		NodoGimnasio gym = _gimnasios[0];
 		for (unsigned int i = 0; i < _gimnasios.size(); ++i){
