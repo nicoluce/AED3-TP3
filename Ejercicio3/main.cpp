@@ -110,10 +110,11 @@ int main(int argc, char const *argv[]){
 	parseo_entrada(g, gc, cantidad_gimnasios, cantidad_paradas);
 	
 	for(int i = 0; i < repeticiones; ++i){
+
 		cerr << "[Corriendo repeticion " << i+1 << ']' << endl;
+
 		auto start = ya();
 		Solucion res = g.tsp_goloso(opcion_greedy, capacidad_mochila);
-		auto end = ya();
 
 		// si no hay solucion entonces no sigo
 		if(res.ids.empty()){
@@ -123,6 +124,7 @@ int main(int argc, char const *argv[]){
 
 		Solucion resBusqueda = busquedaLocal(res, gc, capacidad_mochila, opcion_busqueda);
 		// res = busquedaLocal(res, gc, capacidad_mochila, opcion_busqueda);
+		auto end = ya();
 
 		// imprime el resultado
 		cerr << "sol inicial: " << endl;
