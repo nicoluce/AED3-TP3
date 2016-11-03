@@ -32,11 +32,12 @@ void parseo_entrada(Grafo& g, int n, int m) {
 
 int main(int argc, char const *argv[]) {
 	int repeticiones = 1;
-	string medir;
+	string medir = "";
 
-	int opcion = atoi(argv[1]);
-	if (argc > 2) medir = argv[2];
-	if (argc > 3) repeticiones = atoi(argv[3]);
+	// int opcion = atoi(argv[1]);
+	int opcion = 0;
+	if (argc > 1) medir = argv[1];
+	if (argc > 2) repeticiones = atoi(argv[2]);
 
 	string primera_linea;
 	getline(cin, primera_linea, '\n');
@@ -58,17 +59,26 @@ int main(int argc, char const *argv[]) {
 		Solucion res = g.tsp_goloso(opcion, capacidad_mochila);
 		auto end = ya();
 
-		if (res.ids.empty()) cout << -1 << endl;
-		else {
-			cout << fixed << setprecision(2);
-			cout << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';
-			imprimir_vector(res.ids);
-		}
-		
 		if (medir  == "-m") {
-			cout << "Grafo: " << cantidad_gimnasios << ' ' << cantidad_paradas << ' ' << capacidad_mochila << endl;
+			// cout << '[';
+			// for (unsigned int i = 0; i < res.ids.size(); i++) {
+			// 	cout << '(' << get<0>(g._nodos[res.ids[i]-1].pos) << ", " << get<1>(g._nodos[res.ids[i]-1].pos) << "), ";
+			// }
+			// cout << ']' << endl;
+
 			cout << fixed << setprecision(0);
-			cout << "Tiempo: " << chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count() << endl;
+			cout << res.ids.size() << ',' << res.distancia_recorrida << ',';
+			cout << cantidad_gimnasios << ',' << capacidad_mochila << ',' << cantidad_paradas + cantidad_gimnasios << ',';
+			cout << cantidad_paradas << ',';
+			cout << chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count() << endl;
+
+		} else {
+			if (res.distancia_recorrida == -1) cout << -1 << endl;
+			else {
+				cout << fixed << setprecision(2);
+				cout << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';
+				imprimir_vector(res.ids);
+			}
 		}
 	}
 	return 0;

@@ -103,7 +103,7 @@ int Grafo::buscarPociones(int mochila, Posicion desde, vector<bool>& visitados) 
 }
 
 unsigned int Grafo::elegirPrimerNodo(int opcion){
-	unsigned int res;
+	unsigned int res = 0;
 	switch (opcion) {
 		case 0:
 			srand (time(NULL));

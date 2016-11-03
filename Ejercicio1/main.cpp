@@ -57,23 +57,27 @@ int main(int argc, char const *argv[]) {
 		Solucion res = g.tsp_backtracking(capacidad_mochila);
 		auto end = ya();
 
-		if (res.distancia_recorrida == -1) cout << -1 << endl;
-		else {
-			cout << fixed << setprecision(2);
-			cout << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';
-			imprimir_vector(res.ids);
-		}
 
 		if (medir  == "-m") {
-			cout << '[';
-			for (unsigned int i = 0; i < res.ids.size(); i++) {
-				cout << '(' << get<0>(g._nodos[res.ids[i]-1].pos) << ", " << get<1>(g._nodos[res.ids[i]-1].pos) << "), ";
-			}
-			cout << ']' << endl;
-			cout << "Grafo: " << cantidad_gimnasios << ' ' << cantidad_paradas << ' ' << capacidad_mochila << endl;
-			cout << "Data: " << recursiones << ' ' << podas << ' ' << soluciones << endl;
+			// cout << '[';
+			// for (unsigned int i = 0; i < res.ids.size(); i++) {
+			// 	cout << '(' << get<0>(g._nodos[res.ids[i]-1].pos) << ", " << get<1>(g._nodos[res.ids[i]-1].pos) << "), ";
+			// }
+			// cout << ']' << endl;
+
 			cout << fixed << setprecision(0);
-			cout << "Tiempo: " << chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count() << endl;
+			cout << res.ids.size() << ',' << res.distancia_recorrida << ',';
+			cout << cantidad_gimnasios << ',' << capacidad_mochila << ',' << cantidad_paradas + cantidad_gimnasios << ',';
+			cout << podas << ',' << cantidad_paradas << ',' << recursiones << ',' << soluciones << ',';
+			cout << chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count() << endl;
+
+		} else {
+			if (res.distancia_recorrida == -1) cout << -1 << endl;
+			else {
+				cout << fixed << setprecision(2);
+				cout << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';
+				imprimir_vector(res.ids);
+			}
 		}
 	}
 	// g.imprimir();

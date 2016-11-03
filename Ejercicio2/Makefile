@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -g -Wall -Werror -std=c++11
+CFLAGS = -g -Wall -Werror -std=c++11 -O3
 AUXDIR = ../Auxiliares
 
 BINARIES = ej2.out

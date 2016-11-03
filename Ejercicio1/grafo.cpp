@@ -83,8 +83,8 @@ void Grafo::recursivo(unsigned int indice_actual, unsigned int pociones_actuales
 		for (unsigned int i = 0; i < _nodos.size(); i++) {
 			// Hago recursion en todos los nodos no visitados.
 			if (!visitados[i] && 
-				(!_nodos[i].tipo == Gimnasio or (_nodos[i].pociones_necesarias <= pociones_actuales)) && // Si es un gimnasio chequeo que me den las pociones
-				(!_nodos[i].tipo == Pokeparada or (pociones_actuales < capacidad_mochila))) { // Si es pokeparada chequeo que no tenga la mochila llena
+				(!(_nodos[i].tipo == Gimnasio) or (_nodos[i].pociones_necesarias <= pociones_actuales)) && // Si es un gimnasio chequeo que me den las pociones
+				(!(_nodos[i].tipo == Pokeparada) or (pociones_actuales < capacidad_mochila))) { // Si es pokeparada chequeo que no tenga la mochila llena
 				
 					camino_actual.push_back(_nodos[i].id);
 					visitados[i] = true;

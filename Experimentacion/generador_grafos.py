@@ -7,13 +7,11 @@ from math import *
 def main(argv):
 
 	cantidad_de_gimnasios = int(argv[0])
-	rango_posiciones = int(argv[1])
-	alpha = float(argv[2])
 	modo = 'random'
 	output = None
 
 	try:
-		opts, args = getopt.getopt(argv[3:], 'm:o:', ['modo=', 'output='])
+		opts, args = getopt.getopt(argv[1:], 'm:o:', ['modo=', 'output='])
 	except getopt.GetoptErrors:
 		sys.exit(2)
 
@@ -23,7 +21,7 @@ def main(argv):
 		elif opt in ('-o', '--output'):
 			output = arg
 	
-	return {'Gimnasios':cantidad_de_gimnasios, 'Rango Pos':rango_posiciones, 'Alpha':alpha , 'Modo':modo, 'Output':output}
+	return {'Gimnasios':cantidad_de_gimnasios, 'Modo':modo, 'Output':output}
 
 def f(x, alpha):
 	return int( ceil(alpha * (x**2))) + 1
@@ -87,12 +85,12 @@ def nodogenerator(lower_bound, upper_bound, distancia_entre_nodos, cantidad_de_g
 	posiciones_pokeparadas = posiciones_pokeparadas[len(posiciones_gimnasios):]
 
 
-	print posiciones_gimnasios
-	print posiciones_pokeparadas
+	# print posiciones_gimnasios
+	# print posiciones_pokeparadas
 
-	# plt.plot(*zip(*posiciones_gimnasios), marker='o', color='b', ls='')
-	# plt.plot(*zip(*posiciones_pokeparadas), marker='o', color='r', ls='')
-	# plt.show()
+	plt.plot(*zip(*posiciones_gimnasios), marker='o', color='b', ls='')
+	plt.plot(*zip(*posiciones_pokeparadas), marker='o', color='r', ls='')
+	plt.show()
 
 	out_string = str(cantidad_de_gimnasios) + ' ' + str(cantidad_de_pokeparadas) + ' ' + str(max_pocion + 2) + '\n' + out_string
 	return out_string[:-1]
@@ -153,8 +151,8 @@ def nodogenerator2(lower_bound, upper_bound, distancia_entre_nodos, cantidad_de_
 	posiciones_pokeparadas = posiciones_pokeparadas[len(posiciones_gimnasios):]
 
 
-	print posiciones_gimnasios
-	print posiciones_pokeparadas
+	# print posiciones_gimnasios
+	# print posiciones_pokeparadas
 
 	plt.plot(*zip(*posiciones_gimnasios), marker='o', color='b', ls='')
 	plt.plot(*zip(*posiciones_pokeparadas), marker='o', color='r', ls='')
@@ -164,22 +162,35 @@ def nodogenerator2(lower_bound, upper_bound, distancia_entre_nodos, cantidad_de_
 	return out_string[:-1]
 
 
+def alpha(cantidad_de_gimnasios):
+	a = cantidad_de_gimnasios
+	while a > 9:
+		a = a / 10
+
+	if a == 0:
+		a = 1
+
+	a = (0.05/ ( float(cantidad_de_gimnasios) / a))
+	return a
+
+
 def generar_esquinas(cantidad_de_gimnasios, alpha, rango_posiciones, filename=None):
 	if filename:
 		output = open(filename, 'w')
 	else:
 		output = sys.stdout
-	
 	print >>output, nodogenerator2(0, rango_posiciones, 1, cantidad_de_gimnasios, alpha)
 
 comandos = main(sys.argv[1:])
 
 cantidad_de_gimnasios = comandos['Gimnasios']
-rango_posiciones = comandos['Rango Pos']
+rango_posiciones = cantidad_de_gimnasios*(cantidad_de_gimnasios*0.4) # 4%
 output_filename = comandos['Output']
-alpha = comandos['Alpha']
+alpha = alpha(cantidad_de_gimnasios)
 
 if comandos['Modo'] == 'random':
 	generar_random(cantidad_de_gimnasios, alpha, rango_posiciones, filename=output_filename)
 elif comandos['Modo'] == 'esquina':
 	generar_esquinas(cantidad_de_gimnasios, alpha, rango_posiciones, filename=output_filename)
+else:
+	sys.exit(2)
