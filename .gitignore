@@ -30,3 +30,9 @@
 
 # Entradas
 *.e
+
+.DS_Store
+*/.DS_Store
+
+*.dSYM
+*/*.dSYM
