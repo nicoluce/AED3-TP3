@@ -9,14 +9,14 @@
 # make clean -C ../Ejercicio$1 || exit
 make -C ../Ejercicio$1 || exit
 if [[ $1 == 1 ]]; then
-	echo Aristas,Distancia,Gimnasios,Mochila,Nodos,Podas,Pokeparadas,Recursiones,Soluciones,Tiempo	
+	echo ,Aristas,Distancia,Gimnasios,Mochila,Nodos,Podas,Pokeparadas,Recursiones,Soluciones,Tiempo	
 elif [[ $1 == 2 ]]; then
-	echo Aristas,Distancia,Gimnasios,Mochila,Nodos,Pokeparadas,Tiempo	
+	echo ,Aristas,Distancia,Gimnasios,Mochila,Nodos,Pokeparadas,Tiempo	
 fi
 
 for (( i = $2; i <= $3; i += $4 )); do
-	echo $i	
-	python generador_grafos.py $i -m random -o grafo_random_$i
+	echo $1	
+	python generador_grafos.py $i -o grafo_random_$i
 	# ../Ejercicio$1/ej$1.out -m $5 < grafo_random_$i
 done
 
