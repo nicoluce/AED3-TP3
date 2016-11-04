@@ -16,7 +16,7 @@ fi
 
 for (( i = $2; i <= $3; i += $4 )); do
 
-	python generador_grafos.py $i -m random -o grafo_$i
-	../Ejercicio$1/ej$1.out -m $5 < grafo_$i
+	python generador_grafos.py $i -m random -o grafo_random_$i
+	#../Ejercicio$1/ej$1.out -m $5 < grafo_$i
 done
 
