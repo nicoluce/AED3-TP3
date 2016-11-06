@@ -3,7 +3,7 @@
 #include <stdio.h>      /* printf, scanf, puts, NULL */
 #include <stdlib.h> 
 #include <algorithm>
-
+#include <random>
 #include "../Auxiliares/auxiliares.h"
 #include "grafo.h"
 
@@ -164,4 +164,86 @@ const void Grafo::imprimir() {
 		cout << "<" << this->_pokeparadas[i].pos.first << ", " << this->_pokeparadas[i].pos.second << ">\n";
 	}
 	cout << "}" << endl;
+}
+
+
+//###########################################
+// Para el ejercicio 4
+//###########################################
+
+// Donde va la magia
+Solucion Grafo::tsp_goloso_rnd(unsigned int opcion_primer_nodo, unsigned int capacidad_mochila, unsigned int cantidad_cercanos) {
+	priority_queue<NodoGimnasio, vector<NodoGimnasio>, greater<NodoGimnasio> > heapnasios (_gimnasios.begin(), _gimnasios.end());
+	vector<bool> visitados(_pokeparadas.size(), false);
+
+	unsigned int primer_nodo_indice = elegirPrimerNodo(opcion_primer_nodo);
+	unsigned int pociones_en_mochila = 0;
+	Solucion res;
+
+	visitados[primer_nodo_indice] = true;
+	Posicion posicion_actual = _pokeparadas[primer_nodo_indice].pos;
+
+	if (capacidad_mochila >= 3) pociones_en_mochila += 3;
+	else pociones_en_mochila = capacidad_mochila;
+
+	res.ids.push_back(_pokeparadas[primer_nodo_indice].id);
+	//res.ids.push_back(primer_nodo_indice);
+	while(heapnasios.size() > 0) {
+		while(heapnasios.size() > 0 && pociones_en_mochila >= heapnasios.top().pociones_necesarias) {
+
+			vector<NodoGimnasio> gyms;
+			unsigned int hasta;
+			if(heapnasios.size() >= cantidad_cercanos){
+				hasta = cantidad_cercanos;
+			}else{
+				hasta = heapnasios.size();
+			}	
+			for (unsigned int i = 0; i < hasta; ++i){
+				gyms.push_back(heapnasios.top());
+				heapnasios.pop();
+			}
+
+			srand(time(NULL));
+			int j = rand() % hasta;
+
+			while(gyms[j].pociones_necesarias > pociones_en_mochila){
+				heapnasios.push(gyms[j]);
+				gyms.erase(gyms.begin() + j);
+				j = rand() % gyms.size();
+			}
+
+			NodoGimnasio gym = gyms[j];
+			gyms.erase(gyms.begin() + j);
+			res.ids.push_back(gym.id);
+			res.distancia_recorrida += distancia(gym.pos, posicion_actual);
+			posicion_actual = gym.pos;
+
+			pociones_en_mochila -= gym.pociones_necesarias;
+
+			for (unsigned int i = 0; i < gyms.size(); ++i){
+				heapnasios.push(gyms[i]);
+			}		
+		}
+
+		if (!heapnasios.empty()) {
+			int indice_pokeparada_mas_cercana = buscarPociones(pociones_en_mochila,posicion_actual, visitados);
+
+			if (indice_pokeparada_mas_cercana == -1) {
+				res.ids.clear();
+				return res;
+			}
+
+			res.distancia_recorrida += distancia(_pokeparadas[indice_pokeparada_mas_cercana].pos, posicion_actual);
+			posicion_actual = _pokeparadas[indice_pokeparada_mas_cercana].pos;
+			
+			visitados[indice_pokeparada_mas_cercana] = true;
+			
+			if (pociones_en_mochila + 3 <= capacidad_mochila) pociones_en_mochila += 3;
+			else pociones_en_mochila = capacidad_mochila;
+
+			res.ids.push_back(_pokeparadas[indice_pokeparada_mas_cercana].id);
+		}
+	}
+
+	return res;
 }

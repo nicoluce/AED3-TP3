@@ -1,10 +1,12 @@
+#ifndef __CAMINO_HPP__
+#define __CAMINO_HPP__
+
 #include "../Ejercicio2/grafo.h"
 #include <math.h> // distancia
 #define MAX_POCIONES_POKEPARADA 3
 
 using namespace std;
 
-int min(int a, int b);
 double distancia(const Posicion& p1, const Posicion& p2);
 
 struct NodoP {
@@ -47,20 +49,6 @@ class Camino {
 		vector<int> _ids;
 		double _dist;
 };
-
-// ******************************
-// Funciones Auxiliares
-// ******************************
-
-int min(int a, int b){ return a < b ? a : b;}
-
-double distancia(const Posicion& p1, const Posicion& p2){
-	return sqrt( (p1.first-p2.first)*(p1.first-p2.first) + (p1.second-p2.second)*(p1.second-p2.second) );
-}
-
-bool esPokeparada(const NodoP& n){
-	return n.t == Pokeparada;
-}
 
 // ******************************
 // Grafo Completo
@@ -178,37 +166,4 @@ ostream& operator<<(ostream& out, const Camino<T>& c){
 	return c.imprimirCamino(out);
 }
 
-// ******************************
-// Calculo de vecinos
-// ******************************
-
-bool esCaminoValido(Camino<NodoP>& c, int capacidadMochila){
-	int pociones = 0;
-	int pesoActual = 0;
-	for(int i = 0; i < c.largo(); ++i){
-		if(esPokeparada(c.iesimoElemento(i))){
-			pociones += min(MAX_POCIONES_POKEPARADA, capacidadMochila - pesoActual);
-		} else {
-			// entonces es gimnasio, si tengo menos pociones que lo que cuesta el gimnasio entonces perdi
-			if(pociones < c.iesimoElemento(i).pociones)
-				return false;
-			pociones -= c.iesimoElemento(i).pociones;
-		}
-	}
-	return true;
-}
-
-void vecinos_swap(Camino<NodoP>& c, int capacidadMochila, vector< Camino<NodoP> >& res){
-	for(int i = 0; i < c.largo(); ++i){
-		for(int j = i+1; j < c.largo(); ++j){
-			c.swap(i, j);
-			if(esCaminoValido(c, capacidadMochila))
-				res.push_back(c);
-			c.swap(i, j); // vuelvo a swapear para no modificar al c original
-		}
-	}
-}
-
-void vecinos_otros(Camino<NodoP>& c, vector< Camino<NodoP> >& res){
-	return;	
-}
+#endif

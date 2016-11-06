@@ -7,83 +7,9 @@
 #include <chrono>
 #include <iomanip> // setprecision
 
-#include "grafo.h"
-#include "../Auxiliares/auxiliares.h"
-#include "../Ejercicio3/camino.hpp"
+#include "../Ejercicio3/busqueda_local.h"
 
 using namespace std;
-
-void parseo_entrada(Grafo& g, GrafoCompleto<NodoP>& gc, int n, int m){
-	string buffer;
-	vector<int>entrada_parseada;
-
-	for(int i = 0; i < n; i++){
-		getline(cin, buffer, '\n');
-		entrada_parseada = split(buffer, ' ');
-		g.agregar_gimnasio(pair<int, int>(entrada_parseada[0], entrada_parseada[1]), entrada_parseada[2]);
-		NodoP aux(pair<int, int>(entrada_parseada[0], entrada_parseada[1]), Gimnasio, entrada_parseada[2]);
-		gc.agregarNodo(aux);
-	}
-
-	for(int i = 0; i < m; i++){
-		getline(cin, buffer, '\n');
-		entrada_parseada = split(buffer, ' ');
-		g.agregar_pokeparada(pair<int, int>(entrada_parseada[0], entrada_parseada[1]));
-		NodoP aux(pair<int, int>(entrada_parseada[0], entrada_parseada[1]), Pokeparada, 0);
-		gc.agregarNodo(aux);
-	}
-}
-
-Solucion busquedaLocal(Solucion res, GrafoCompleto<NodoP>& gc, int capacidad_mochila, int opcion_busqueda){
-	// armo el camino a partir de res:
-	vector<NodoP> secuNodos;
-	vector<int> secuIndex;
-	for(unsigned int i = 0; i < res.ids.size(); ++i){
-		secuNodos.push_back(gc.iesimoNodo(res.ids[i]-1)); // el -1 porque los ids empiezan desde 1
-		secuIndex.push_back(res.ids[i]);
-	}
-
-	Camino<NodoP> camino(secuNodos, secuIndex);
-
-	// itero hasta que no mejoro mas
-	bool mejoraLaSolucion;
-	do {
-		mejoraLaSolucion = false;
-		// calculo los vecinos
-		vector< Camino<NodoP> > vecinos;
-		switch(opcion_busqueda){
-			case 0:
-				vecinos_swap(camino, capacidad_mochila, vecinos);
-				break;
-			case 1:
-				vecinos_otros(camino, vecinos);
-				break;
-		}
-
-		// busco el minimo de todos los vecinos tal que, a su vez, sea menor a lo que ya tenia
-		Distancia distMin = camino.distanciaTotal();
-		int indexMin = -1;
-		for(int i = 0; i < (int)vecinos.size(); ++i){
-			if(vecinos[i].distanciaTotal() < distMin){
-				indexMin = i;
-				mejoraLaSolucion = true;
-			}
-		}
-		
-		// actualizo el camino con el minimo de los vecinos
-		if(mejoraLaSolucion){
-			camino = vecinos[indexMin];
-		}
-
-	} while(mejoraLaSolucion);
-
-	Solucion s;
-	s.distancia_recorrida = camino.distanciaTotal();
-	for(int i = 0; i < camino.largo(); ++i){
-		s.ids.push_back((unsigned int)camino.iesimoId(i));
-	}
-	return s;
-}
 
 #define ya chrono::high_resolution_clock::now
 
@@ -110,14 +36,14 @@ int main(int argc, char const *argv[]){
 	
 	Grafo g(cantidad_gimnasios, cantidad_paradas);
 	GrafoCompleto<NodoP> gc; // no lo pude unificar de forma facil al otro
-	parseo_entrada(g, gc, cantidad_gimnasios, cantidad_paradas);
+	parseo_entrada_busqueda_local(g, gc, cantidad_gimnasios, cantidad_paradas);
 	
 	for(int i = 0; i < repeticiones; ++i){
 
 		cerr << "[Corriendo repeticion " << i+1 << ']' << endl;
 
 		auto start = ya();
-		Solucion s = g.tsp_goloso(opcion_greedy_primer_nodo, capacidad_mochila, opcion_greedy_cercanos);
+		Solucion s = g.tsp_goloso_rnd(opcion_greedy_primer_nodo, capacidad_mochila, opcion_greedy_cercanos);
 
 		// si no hay solucion entonces no sigo
 		if(s.ids.empty()){
@@ -126,7 +52,7 @@ int main(int argc, char const *argv[]){
 		}
 
 		for(int i = 0; i < cantidad_iteraciones; ++i){
-			Solucion s_prima = g.tsp_goloso(opcion_greedy_primer_nodo, capacidad_mochila, opcion_greedy_cercanos);
+			Solucion s_prima = g.tsp_goloso_rnd(opcion_greedy_primer_nodo, capacidad_mochila, opcion_greedy_cercanos);
 			s_prima = busquedaLocal(s_prima, gc, capacidad_mochila, opcion_busqueda);
 			if(s_prima.distancia_recorrida < s.distancia_recorrida){
 				s = s_prima;
