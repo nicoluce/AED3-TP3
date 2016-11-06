@@ -179,7 +179,8 @@ def generar_esquinas(cantidad_de_gimnasios, alpha, rango_posiciones, filename=No
 		output = open(filename, 'w')
 	else:
 		output = sys.stdout
-	print >>output, nodogenerator2(0, rango_posiciones, 1, cantidad_de_gimnasios, alpha)
+
+	print >>output, nodogenerator(0, rango_posiciones, ceil(rango_posiciones*0.1), cantidad_de_gimnasios, alpha)
 
 comandos = main(sys.argv[1:])
 
