@@ -5,6 +5,8 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
+
 std::vector<int> split(const std::string& s, char delim);
 
 template<typename T>

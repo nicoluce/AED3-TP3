@@ -7,13 +7,16 @@ BINARIES = ej3.out
 
 all: $(BINARIES)
 
-$(BINARIES): main.cpp grafo.o $(EJ2DIR)/grafo.h auxiliares.o $(AUXDIR)/auxiliares.h camino.hpp
-	$(CC) $(CFLAGS) main.cpp grafo.o auxiliares.o -o $(BINARIES)
+$(BINARIES): main.cpp grafo.o busqueda_local.o auxiliares.o
+	$(CC) $(CFLAGS) main.cpp grafo.o busqueda_local.o auxiliares.o -o $(BINARIES)
 
-grafo.o: $(EJ2DIR)/grafo.cpp
+grafo.o: $(EJ2DIR)/grafo.cpp $(EJ2DIR)/grafo.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-auxiliares.o: $(AUXDIR)/auxiliares.cpp
+auxiliares.o: $(AUXDIR)/auxiliares.cpp $(AUXDIR)/auxiliares.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+busqueda_local.o: busqueda_local.cpp busqueda_local.h camino.hpp 
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

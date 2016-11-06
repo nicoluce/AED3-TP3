@@ -39,6 +39,7 @@ public:
 	int buscarPociones(int mochila, Posicion desde, vector<bool>& visitados);
 	unsigned int elegirPrimerNodo(int opcion);
 	Solucion tsp_goloso(unsigned int opcion_primer_nodo, unsigned int capacidad_mochila); // devuelve la solucion como pide el enunciado, o un solo elemento (-1) si no hay solucion
+	Solucion tsp_goloso_rnd(unsigned int opcion_primer_nodo, unsigned int capacidad_mochila, unsigned int cantidad_cercanos); // devuelve la solucion como pide el enunciado, o un solo elemento (-1) si no hay solucion
 
 private:
 	struct Nodo {
@@ -56,6 +57,9 @@ private:
 	};
 
 	struct NodoGimnasio : public Nodo {
+		NodoGimnasio() : pociones_necesarias(0)
+		{};
+
 		NodoGimnasio(unsigned int id, Posicion pos, Tipo tipo, unsigned int pociones = 0) : 
 			Nodo(id, pos, tipo), pociones_necesarias(pociones)
 		{}
