@@ -153,6 +153,7 @@ int Camino<T>::iesimoId(int i) const {
 template<class T>
 ostream& Camino<T>::imprimirCamino(ostream& out) const {
 	// out << "[";
+	out << fixed << setprecision(2) << distanciaTotal() << " ";
 	out << largo()-1 << " ";
 	for(int i = 0; i < largo(); ++i){
 		out << iesimoId(i) << " ";
