@@ -61,7 +61,7 @@ void Grafo::recursivo(unsigned int indice_actual, unsigned int pociones_actuales
 	//------------------------------
 
 	// PODA: Si ya se conoce un resultado mejor, corta.
-	if (distancia_recorrida > distancia_resultado && distancia_resultado != -1) {
+	if (distancia_recorrida > distancia_resultado && distancia_resultado != -1 || !haySolucion(pociones_actuales)) {
 		//---- Para experimentacion ----
 		podas++;
 		//------------------------------
@@ -74,35 +74,8 @@ void Grafo::recursivo(unsigned int indice_actual, unsigned int pociones_actuales
 		else pociones_actuales = capacidad_mochila;
 	} else pociones_actuales -= _nodos[indice_actual].pociones_necesarias;
 
-	// Lo guardo para usarlo varias veces sin tener que recalcularlo
-	bool hay_solucion = haySolucion(pociones_actuales);
-	bool es_solucion = esSolucion();
-
 	// Si el estado actual no es solucion y todavia existe una...
-	if (!es_solucion && hay_solucion) {
-		for (unsigned int i = 0; i < _nodos.size(); i++) {
-			// Hago recursion en todos los nodos no visitados.
-			if (!visitados[i] && 
-				(!(_nodos[i].tipo == Gimnasio) or (_nodos[i].pociones_necesarias <= pociones_actuales)) && // Si es un gimnasio chequeo que me den las pociones
-				(!(_nodos[i].tipo == Pokeparada) or (pociones_actuales < capacidad_mochila))) { // Si es pokeparada chequeo que no tenga la mochila llena
-				
-					camino_actual.push_back(_nodos[i].id);
-					visitados[i] = true;
-					
-					recursivo(i, pociones_actuales, distancia_recorrida + distancia(_nodos[indice_actual].pos, _nodos[i].pos), camino_actual);
-					
-					visitados[i] = false;
-					camino_actual.pop_back();
-			}
-		}
-	}
-
-	//---- Para experimentacion ----
-	if (!hay_solucion) podas++;
-	//------------------------------
-
-	if (es_solucion) {
-	
+	if (esSolucion()) {
 		//---- Para experimentacion ----
 		soluciones++;
 		//------------------------------	
@@ -119,6 +92,22 @@ void Grafo::recursivo(unsigned int indice_actual, unsigned int pociones_actuales
 
 		// cout << distancia_resultado << ' ' << d << ' ';
 		// imprimir_vector(camino_resultado, "camino: ");
+	} else {
+		for (unsigned int i = 0; i < _nodos.size(); i++) {
+			// Hago recursion en todos los nodos no visitados.
+			if (!visitados[i] && 
+				(!(_nodos[i].tipo == Gimnasio) or (_nodos[i].pociones_necesarias <= pociones_actuales)) && // Si es un gimnasio chequeo que me den las pociones
+				(!(_nodos[i].tipo == Pokeparada) or (pociones_actuales < capacidad_mochila))) { // Si es pokeparada chequeo que no tenga la mochila llena
+				
+					camino_actual.push_back(_nodos[i].id);
+					visitados[i] = true;
+					
+					recursivo(i, pociones_actuales, distancia_recorrida + distancia(_nodos[indice_actual].pos, _nodos[i].pos), camino_actual);
+					
+					visitados[i] = false;
+					camino_actual.pop_back();
+			}
+		}
 	}
 }
 

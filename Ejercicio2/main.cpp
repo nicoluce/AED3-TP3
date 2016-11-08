@@ -35,7 +35,7 @@ int main(int argc, char const *argv[]) {
 	string medir = "";
 
 	// int opcion = atoi(argv[1]);
-	int opcion = 0;
+	int opcion = 1;
 	if (argc > 1) medir = argv[1];
 	if (argc > 2) repeticiones = atoi(argv[2]);
 

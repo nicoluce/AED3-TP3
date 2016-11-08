@@ -15,8 +15,8 @@ elif [[ $1 == 2 ]]; then
 fi
 
 for (( i = $2; i <= $3; i += $4 )); do
-	echo $i	
-	python generador_grafos.py $i -m random -o grafo_random_$i
-	# ../Ejercicio$1/ej$1.out -m $5 < grafo_random_$i
+	# echo $i	
+	# python generador_grafos.py $i -m mejor -o grafo_mejor_$i
+	../Ejercicio$1/ej$1.out -m $5 < ./Grafos_mejor_caso/grafo_mejor_$i
 done
 
