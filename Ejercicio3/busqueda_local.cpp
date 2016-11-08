@@ -108,7 +108,7 @@ Solucion busquedaLocal(Solucion res, GrafoCompleto<NodoP>& gc, int capacidad_moc
 				break;
 		}
 		auto end = ya();
-		tiempo_swap = chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count();
+		tiempo_swap += chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count();
 		vecinos_total += vecinos.size();
 
 		// busco el minimo de todos los vecinos tal que, a su vez, sea menor a lo que ya tenia
