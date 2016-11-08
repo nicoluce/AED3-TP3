@@ -77,8 +77,7 @@ int main(int argc, char const *argv[]){
 		EXP_STR += to_string(tiempo_busqueda)+","+to_string(res.distancia_recorrida)+","+EXP_STR_AUX;
 
 		if(EXP){
-			EXP_STR += "\n";
-			printf(EXP_STR.c_str());
+			printf("%s\n", EXP_STR.c_str());
 		} else {
 			// imprime el resultado
 			cout << fixed << setprecision(2) << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';
