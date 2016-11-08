@@ -31,7 +31,7 @@ def nuevaposicion(p1, p2):
 	for x in xrange(0,p2[0]):
 		t = ()
 		for y in xrange(0,p2[1]):
-			t += (random.randint(p1[0], p1[1]),)
+			t += (random.randint(int(p1[0]), int(p1[1])),)
 		res.append(t)
 	return res
 
@@ -85,12 +85,12 @@ def nodogenerator(lower_bound, upper_bound, distancia_entre_nodos, cantidad_de_g
 	posiciones_pokeparadas = posiciones_pokeparadas[len(posiciones_gimnasios):]
 
 
-	print posiciones_gimnasios
-	print posiciones_pokeparadas
+	# print posiciones_gimnasios
+	# print posiciones_pokeparadas
 
-	plt.plot(*zip(*posiciones_gimnasios), marker='o', color='b', ls='')
-	plt.plot(*zip(*posiciones_pokeparadas), marker='o', color='r', ls='')
-	plt.show()
+	# plt.plot(*zip(*posiciones_gimnasios), marker='o', color='b', ls='')
+	# plt.plot(*zip(*posiciones_pokeparadas), marker='o', color='r', ls='')
+	# plt.show()
 
 	out_string = str(cantidad_de_gimnasios) + ' ' + str(cantidad_de_pokeparadas) + ' ' + str(max_pocion + 2) + '\n' + out_string
 	return out_string[:-1]
@@ -125,7 +125,6 @@ def nodogenerator2(lower_bound, upper_bound, distancia_entre_nodos, cantidad_de_
 		if dis >= distancia_entre_nodos:
 			posiciones_gimnasios.append(newval)
 			pociones_necesarias = f(i, alpha)
-			print pociones_necesarias
 			max_pocion = max(max_pocion, pociones_necesarias)
 			total_pociones += pociones_necesarias
 			out_string += str(newval[0]) + ' ' + str(newval[1]) + ' ' + str(pociones_necesarias) + '\n'
@@ -133,7 +132,7 @@ def nodogenerator2(lower_bound, upper_bound, distancia_entre_nodos, cantidad_de_
 		else:
 			distancia_entre_nodos -= 0.1
 
-	cantidad_de_pokeparadas = random.randint(ceil(total_pociones/3.0), ceil(total_pociones/3.0))
+	cantidad_de_pokeparadas = random.randint(int(ceil(total_pociones/3.0)), int(ceil(total_pociones/3.0)))
 
 	posiciones_pokeparadas = list(posiciones_gimnasios)
 	while len(posiciones_pokeparadas) < cantidad_de_gimnasios + cantidad_de_pokeparadas:
@@ -155,9 +154,9 @@ def nodogenerator2(lower_bound, upper_bound, distancia_entre_nodos, cantidad_de_
 	# print posiciones_gimnasios
 	# print posiciones_pokeparadas
 
-	# plt.plot(*zip(*posiciones_gimnasios), marker='o', color='b', ls='')
-	# plt.plot(*zip(*posiciones_pokeparadas), marker='o', color='r', ls='')
-	# plt.show()
+	plt.plot(*zip(*posiciones_gimnasios), marker='o', color='b', ls='')
+	plt.plot(*zip(*posiciones_pokeparadas), marker='o', color='r', ls='')
+	plt.show()
 
 	out_string = str(cantidad_de_gimnasios) + ' ' + str(cantidad_de_pokeparadas) + ' ' + str(total_pociones) + '\n' + out_string
 	return out_string[:-1]
@@ -180,7 +179,7 @@ def generar_esquinas(cantidad_de_gimnasios, alpha, rango_posiciones, filename=No
 	else:
 		output = sys.stdout
 
-	print >>output, nodogenerator2(0, rango_posiciones, ceil(rango_posiciones*0.1), cantidad_de_gimnasios, alpha)
+	print >>output, nodogenerator2(0, rango_posiciones, int(ceil(rango_posiciones*0.1)), cantidad_de_gimnasios, alpha)
 
 
 def generar_mejor_caso(cantidad_de_gimnasios, alpha, rango_posiciones, filename=None):
