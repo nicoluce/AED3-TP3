@@ -29,7 +29,7 @@ void parseo_entrada_busqueda_local(Grafo& g, GrafoCompleto<NodoP>& gc, int n, in
 // Calculo de vecinos
 // ******************************
 
-bool esCaminoValido(Camino<NodoP>& c, int capacidadMochila){
+bool esCaminoValido(Camino<NodoP>& c, int capacidadMochila) {
 	int pociones = 0;
 	int pesoActual = 0;
 	for(int i = 0; i < c.largo(); ++i){
@@ -45,27 +45,56 @@ bool esCaminoValido(Camino<NodoP>& c, int capacidadMochila){
 	return true;
 }
 
-void vecinos_swap(Camino<NodoP>& c, int capacidadMochila, list< Camino<NodoP> >& res){
-	for(int i = 0; i < c.largo(); ++i){
-		for(int j = i+1; j < c.largo(); ++j){
-			c.swap(i, j);
-			if(esCaminoValido(c, capacidadMochila))
-				res.push_back(c);
-			c.swap(i, j); // vuelvo a swapear para no modificar al c original
+int a = 0;
+
+bool vecinos_swap(Camino<NodoP>& c, int capacidadMochila) {
+	// cout << "call" << a << endl;
+	// a++;
+	Distancia distanciaOriginal = c.distanciaTotal();
+	for(int i = 0; i < c.largo(); ++i) {
+		for(int j = i+1; j < c.largo(); ++j) {
+			if (c.iesimoElemento(i).t == Pokeparada && c.iesimoElemento(j).t == Pokeparada) {
+				c.actualizarDistanciaSwap(i, j);
+				c.swap(i, j);
+				// c.actualizarDistancia();
+				// esCaminoValido(c, capacidadMochila);
+				if((distanciaOriginal > c.distanciaTotal())){
+					// cerr << "swapeo " << c.iesimoId(i) << ' ' << c.iesimoId(j) << ' ' << c.distanciaTotal() << endl;
+					// cerr << "dist: " << c.distanciaTotal() << endl;
+					return true;
+				}
+				c.actualizarDistanciaSwap(i, j);
+				c.swap(i, j); // vuelvo a swapear para no modificar al c original
+				// c.actualizarDistancia();
+				// cout << "fin" << endl;
+			}
 		}
 	}
+	return false;
 }
 
-void vecinos_swap_doble(Camino<NodoP>& c, int capacidadMochila, list< Camino<NodoP> >& res){
-	// un swap
-	list< Camino<NodoP> > primerSwap;
-	vecinos_swap(c, capacidadMochila, primerSwap);
-	// segundo swap
-	for(std::list< Camino<NodoP> >::iterator it=primerSwap.begin(); it != primerSwap.end(); ++it){
-		list< Camino<NodoP> > aux;
-		vecinos_swap(*it, capacidadMochila, aux);
-		res.splice(res.end(), aux); // muevo los elementos de aux al final de res
+bool vecinos_swap_doble(Camino<NodoP>& c, int capacidadMochila){
+	Distancia distanciaOriginal = c.distanciaTotal();
+	for(int i = 0; i < c.largo(); ++i) {
+		for(int j = i+1; j < c.largo(); ++j) {
+			if (c.iesimoElemento(i).t == Gimnasio && c.iesimoElemento(j).t == Gimnasio && c.iesimoElemento(i).pociones == c.iesimoElemento(j).pociones) {
+				c.actualizarDistanciaSwap(i, j);
+				c.swap(i, j);
+				// c.actualizarDistancia();
+				// esCaminoValido(c, capacidadMochila);
+				if((distanciaOriginal > c.distanciaTotal())){
+					// cerr << "swapeo " << c.iesimoId(i) << ' ' << c.iesimoId(j) << ' ' << c.distanciaTotal() << endl;
+					// cerr << "dist: " << c.distanciaTotal() << endl;
+					return true;
+				}
+				c.actualizarDistanciaSwap(i, j);
+				c.swap(i, j); // vuelvo a swapear para no modificar al c original
+				// c.actualizarDistancia();
+				// cout << "fin" << endl;
+			}
+		}
 	}
+	return false;
 }
 
 
@@ -90,41 +119,34 @@ Solucion busquedaLocal(Solucion res, GrafoCompleto<NodoP>& gc, int capacidad_moc
 
 	unsigned int cant_mejoras = 0; // para experimentar
 	unsigned long long vecinos_total = 0; // para experimentar
-	double tiempo_swap; // para experimentar
+	double tiempo_swap  = 0; // para experimentar
+
 
 	// itero hasta que no mejoro mas
 	bool mejoraLaSolucion;
 	do {
-		mejoraLaSolucion = false;
-		// calculo los vecinos
-		list< Camino<NodoP> > vecinos;
+
+		cerr << cant_mejoras << endl;
+
 		auto start = ya();
+		mejoraLaSolucion = false;
 		switch(opcion_busqueda){
 			case 0:
-				vecinos_swap(camino, capacidad_mochila, vecinos);
+				mejoraLaSolucion = vecinos_swap(camino, capacidad_mochila);
 				break;
 			case 1:
-				vecinos_swap_doble(camino, capacidad_mochila, vecinos);
+				mejoraLaSolucion = vecinos_swap_doble(camino, capacidad_mochila);
 				break;
 		}
+		// vecinos_total += vecinos.size();
 		auto end = ya();
 		tiempo_swap += chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count();
-		vecinos_total += vecinos.size();
 
 		// busco el minimo de todos los vecinos tal que, a su vez, sea menor a lo que ya tenia
-		Distancia distMin = camino.distanciaTotal();
-		std::list< Camino<NodoP> >::iterator itMin;
-		for(std::list< Camino<NodoP> >::iterator it=vecinos.begin(); it != vecinos.end(); ++it){
-			if(it->distanciaTotal() < distMin){
-				distMin = it->distanciaTotal();
-				itMin = it;
-				mejoraLaSolucion = true;
-			}
-		}
 		
 		// actualizo el camino con el minimo de los vecinos
 		if(mejoraLaSolucion){
-			camino = *itMin; // camino = vecinos[indexMin];
+			// camino = *itMin; // camino = vecinos[indexMin];
 			cant_mejoras++; // para experimentar
 		}
 
@@ -139,6 +161,7 @@ Solucion busquedaLocal(Solucion res, GrafoCompleto<NodoP>& gc, int capacidad_moc
 	}
 	return s;
 }
+
 
 // ******************************
 // Funciones Auxiliares

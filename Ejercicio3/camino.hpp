@@ -42,6 +42,7 @@ class Camino {
 		const T& iesimoElemento(int i) const; // O(1)
 		int iesimoId(int i) const; // O(1)
 		ostream& imprimirCamino(ostream& out) const;
+		void actualizarDistanciaSwap(int i, int j);
 
 	private:
 		vector<T> _camino;
@@ -165,6 +166,57 @@ ostream& Camino<T>::imprimirCamino(ostream& out) const {
 template<class T>
 ostream& operator<<(ostream& out, const Camino<T>& c){
 	return c.imprimirCamino(out);
+}
+
+template<class T>
+void Camino<T>::actualizarDistanciaSwap(int i, int j){
+	if (j < i) {
+		int t = i;
+		i = j;
+		j = t;
+	}
+
+	if(i+1 == j) {
+		if (i == 0) {
+			// _dist -= distancia(iesimoElemento(j).pos, iesimoElemento(j+1).pos);
+			// _dist += distancia(iesimoElemento(i).pos, iesimoElemento(j+1).pos);
+		} else {
+			_dist -= distancia(iesimoElemento(i).pos, iesimoElemento(i-1).pos);
+			_dist += distancia(iesimoElemento(j).pos, iesimoElemento(i-1).pos);
+		}
+
+		if (j == largo()-1) {
+			// Como no hay caminos de dos nodos, si j == largo -1 entonces i != 0
+			// _dist -= distancia(iesimoElemento(i).pos, iesimoElemento(i-1).pos);
+			// _dist += distancia(iesimoElemento(j).pos, iesimoElemento(i-1).pos);
+		} else {
+			_dist -= distancia(iesimoElemento(j).pos, iesimoElemento(j+1).pos);
+			_dist += distancia(iesimoElemento(i).pos, iesimoElemento(j+1).pos);
+		}
+
+	} else {
+		if(i == 0){
+			_dist -= distancia(iesimoElemento(i).pos, iesimoElemento(i+1).pos);
+			_dist += distancia(iesimoElemento(j).pos, iesimoElemento(i+1).pos);
+		} else {
+			_dist -= distancia(iesimoElemento(i-1).pos, iesimoElemento(i).pos);
+			_dist -= distancia(iesimoElemento(i).pos, iesimoElemento(i+1).pos);
+
+			_dist += distancia(iesimoElemento(i-1).pos, iesimoElemento(j).pos);
+			_dist += distancia(iesimoElemento(j).pos, iesimoElemento(i+1).pos);
+		}
+
+		if(j == largo()-1){
+			_dist -= distancia(iesimoElemento(j-1).pos, iesimoElemento(j).pos);
+			_dist += distancia(iesimoElemento(j-1).pos, iesimoElemento(i).pos);
+		} else {
+			_dist -= distancia(iesimoElemento(j-1).pos, iesimoElemento(j).pos);
+			_dist -= distancia(iesimoElemento(j).pos, iesimoElemento(j+1).pos);
+
+			_dist += distancia(iesimoElemento(j-1).pos, iesimoElemento(i).pos);
+			_dist += distancia(iesimoElemento(i).pos, iesimoElemento(j+1).pos);
+		}
+	}
 }
 
 #endif
