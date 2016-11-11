@@ -44,7 +44,7 @@ int main(int argc, char const *argv[]){
 		cerr << "[Corriendo repeticion " << i+1 << ']' << endl;
 
 		auto start = ya();
-		Solucion s = g.tsp_goloso_rnd(opcion_greedy_primer_nodo, capacidad_mochila, opcion_greedy_cercanos);
+		Solucion s = g.tsp_goloso_rnd(opcion_greedy_primer_nodo, capacidad_mochila, 1);
 
 		// si no hay solucion entonces no sigo
 		if(s.ids.empty()){
@@ -60,7 +60,10 @@ int main(int argc, char const *argv[]){
 			cerr << "iteracion: " << i << endl;
 
 			Solucion s_prima = g.tsp_goloso_rnd(opcion_greedy_primer_nodo, capacidad_mochila, opcion_greedy_cercanos);
-			s_prima = busquedaLocal(s_prima, gc, capacidad_mochila, opcion_busqueda);
+			// s_prima = busquedaLocal(s_prima, gc, capacidad_mochila, opcion_busqueda);
+			opcion_busqueda++;
+			s_prima = busquedaLocal(s_prima, gc, capacidad_mochila, 0);
+			s_prima = busquedaLocal(s_prima, gc, capacidad_mochila, 1);
 			if(s_prima.distancia_recorrida < s.distancia_recorrida){
 				s = s_prima;
 				cant_mejoras++;

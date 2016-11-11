@@ -8,15 +8,15 @@
 # A6: iteraciones de la busqueda
 
 A1=10
-A2=150
+A2=140
 A3=10
 A4=1
 
 make
 
 PATH='../Ejercicio3/Experimentacion/input'
-OUT='salida.csv'
-COLS='gimnasios,pokeparadas,mochila,tiempo,distancia original,distancia final,cantidad de mejoras,iteraciones,vecinos'
+OUT='salida-vec-pok.csv'
+COLS='gimnasios,pokeparadas,mochila,tiempo,distancia_original,distancia_final,cantidad_de_mejoras,iteraciones,gim_sacados'
 
 
 /bin/rm -f $OUT
@@ -32,7 +32,7 @@ A6=5
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -44,7 +44,7 @@ A6=10
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -56,7 +56,7 @@ A6=15
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -68,7 +68,7 @@ A6=20
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -80,7 +80,7 @@ A6=30
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -92,7 +92,7 @@ A6=40
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -104,11 +104,9 @@ A6=50
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
-
-echo $COLS >> $OUT
 
 echo '*********************************************'
 echo 'Cantidad vecinos: 10		Iteraciones:5'
@@ -119,7 +117,7 @@ A6=5
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -131,7 +129,7 @@ A6=10
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -143,7 +141,7 @@ A6=15
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -155,7 +153,7 @@ A6=20
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -167,7 +165,7 @@ A6=30
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -179,7 +177,7 @@ A6=40
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -191,11 +189,10 @@ A6=50
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 
-echo $COLS >> $OUT
 
 echo '*********************************************'
 echo 'Cantidad vecinos: 15		Iteraciones:5'
@@ -206,7 +203,7 @@ A6=5
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -218,7 +215,7 @@ A6=10
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -230,7 +227,7 @@ A6=15
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -242,7 +239,7 @@ A6=20
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -254,7 +251,7 @@ A6=30
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -266,7 +263,7 @@ A6=40
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
 
 echo '*********************************************'
@@ -278,5 +275,5 @@ A6=50
 for (( i=$A1; i <= $A2; i += $A3 )); do
 	echo '\n'
 	echo 'GRAFO No: '$i'\n';
-	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP30-Mochila30-PP2 >> $OUT
+	./ej4.out 1 $A5 0 $A6 -m $A4 < $PATH/g_rand_N$i-W1000-H1000-MP5-Mochila5-PP2 >> $OUT
 done
