@@ -13,8 +13,8 @@ extern string EXP_STR_AUX; // para experimentar
 void parseo_entrada_busqueda_local(Grafo& g, GrafoCompleto<NodoP>& gc, int n, int m);
 Solucion busquedaLocal(Solucion res, GrafoCompleto<NodoP>& gc, int capacidad_mochila, int opcion_busqueda);
 bool esCaminoValido(Camino<NodoP>& c, int capacidadMochila);
-bool vecinos_swap(Camino<NodoP>& c, int capacidadMochila);
-bool vecinos_swap_doble(Camino<NodoP>& c, int capacidadMochila);
+bool swap_pokeparadas(Camino<NodoP>& c, int capacidadMochila, unsigned int& vecinos_prom);
+bool swap_gimnasion(Camino<NodoP>& c, int capacidadMochila, unsigned int& vecinos_prom);
 int min(int a, int b);
 bool esPokeparada(const NodoP& n);
 

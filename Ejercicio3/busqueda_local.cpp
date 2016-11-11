@@ -47,53 +47,48 @@ bool esCaminoValido(Camino<NodoP>& c, int capacidadMochila) {
 
 int a = 0;
 
-bool vecinos_swap(Camino<NodoP>& c, int capacidadMochila) {
-	// cout << "call" << a << endl;
-	// a++;
+bool swap_pokeparadas(Camino<NodoP>& c, int capacidadMochila, unsigned int& vecinos_prom){
+
 	Distancia distanciaOriginal = c.distanciaTotal();
-	for(int i = 0; i < c.largo(); ++i) {
-		for(int j = i+1; j < c.largo(); ++j) {
-			if (c.iesimoElemento(i).t == Pokeparada && c.iesimoElemento(j).t == Pokeparada) {
+
+	for(int i = 0; i < c.largo(); ++i){
+		for(int j = i+1; j < c.largo(); ++j){
+			if(c.iesimoElemento(i).t == Pokeparada && c.iesimoElemento(j).t == Pokeparada){
+				vecinos_prom++;
 				c.actualizarDistanciaSwap(i, j);
-				c.swap(i, j);
-				// c.actualizarDistancia();
-				// esCaminoValido(c, capacidadMochila);
+				c.swap(i, j);	
 				if((distanciaOriginal > c.distanciaTotal())){
-					// cerr << "swapeo " << c.iesimoId(i) << ' ' << c.iesimoId(j) << ' ' << c.distanciaTotal() << endl;
-					// cerr << "dist: " << c.distanciaTotal() << endl;
 					return true;
 				}
 				c.actualizarDistanciaSwap(i, j);
 				c.swap(i, j); // vuelvo a swapear para no modificar al c original
-				// c.actualizarDistancia();
-				// cout << "fin" << endl;
 			}
 		}
 	}
+
 	return false;
 }
 
-bool vecinos_swap_doble(Camino<NodoP>& c, int capacidadMochila){
+bool swap_gimnasios(Camino<NodoP>& c, int capacidadMochila, unsigned int& vecinos_prom){
+
 	Distancia distanciaOriginal = c.distanciaTotal();
-	for(int i = 0; i < c.largo(); ++i) {
-		for(int j = i+1; j < c.largo(); ++j) {
-			if (c.iesimoElemento(i).t == Gimnasio && c.iesimoElemento(j).t == Gimnasio && c.iesimoElemento(i).pociones == c.iesimoElemento(j).pociones) {
+
+	for(int i = 0; i < c.largo(); ++i){
+		for(int j = i+1; j < c.largo(); ++j){
+			if(c.iesimoElemento(i).t == Gimnasio && c.iesimoElemento(j).t == Gimnasio && c.iesimoElemento(i).pociones == c.iesimoElemento(j).pociones) {
+				vecinos_prom++;
 				c.actualizarDistanciaSwap(i, j);
 				c.swap(i, j);
-				// c.actualizarDistancia();
-				// esCaminoValido(c, capacidadMochila);
+
 				if((distanciaOriginal > c.distanciaTotal())){
-					// cerr << "swapeo " << c.iesimoId(i) << ' ' << c.iesimoId(j) << ' ' << c.distanciaTotal() << endl;
-					// cerr << "dist: " << c.distanciaTotal() << endl;
 					return true;
 				}
 				c.actualizarDistanciaSwap(i, j);
 				c.swap(i, j); // vuelvo a swapear para no modificar al c original
-				// c.actualizarDistancia();
-				// cout << "fin" << endl;
 			}
 		}
 	}
+
 	return false;
 }
 
@@ -103,7 +98,7 @@ bool vecinos_swap_doble(Camino<NodoP>& c, int capacidadMochila){
 // ******************************
 
 // Para los experimentos: 
-// 		EXP_STR_AUX: cant_mejoras, vecinos_total, tiempo_swap
+// 		EXP_STR_AUX: cant_mejoras, tiempo_swap, vecinos_prom
 string EXP_STR_AUX = "";
 
 Solucion busquedaLocal(Solucion res, GrafoCompleto<NodoP>& gc, int capacidad_mochila, int opcion_busqueda){
@@ -118,41 +113,38 @@ Solucion busquedaLocal(Solucion res, GrafoCompleto<NodoP>& gc, int capacidad_moc
 	Camino<NodoP> camino(secuNodos, secuIndex);
 
 	unsigned int cant_mejoras = 0; // para experimentar
-	unsigned long long vecinos_total = 0; // para experimentar
 	double tiempo_swap  = 0; // para experimentar
+	unsigned int vecinos_prom = 0; // para experimentar
 
 
 	// itero hasta que no mejoro mas
 	bool mejoraLaSolucion;
 	do {
 
-		cerr << cant_mejoras << endl;
+		// cerr << cant_mejoras << " " << camino.distanciaTotal() << endl;
 
 		auto start = ya();
 		mejoraLaSolucion = false;
 		switch(opcion_busqueda){
 			case 0:
-				mejoraLaSolucion = vecinos_swap(camino, capacidad_mochila);
+				mejoraLaSolucion = swap_pokeparadas(camino, capacidad_mochila, vecinos_prom);
 				break;
 			case 1:
-				mejoraLaSolucion = vecinos_swap_doble(camino, capacidad_mochila);
+				mejoraLaSolucion = swap_gimnasios(camino, capacidad_mochila, vecinos_prom);
 				break;
 		}
-		// vecinos_total += vecinos.size();
+
 		auto end = ya();
 		tiempo_swap += chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count();
-
-		// busco el minimo de todos los vecinos tal que, a su vez, sea menor a lo que ya tenia
 		
 		// actualizo el camino con el minimo de los vecinos
 		if(mejoraLaSolucion){
-			// camino = *itMin; // camino = vecinos[indexMin];
 			cant_mejoras++; // para experimentar
 		}
 
 	} while(mejoraLaSolucion);
 
-	EXP_STR_AUX += to_string(cant_mejoras)+","+to_string(vecinos_total)+","+to_string(tiempo_swap)+",";
+	EXP_STR_AUX += to_string(cant_mejoras)+","+to_string(tiempo_swap)+","+to_string(vecinos_prom)+",";
 
 	Solucion s;
 	s.distancia_recorrida = camino.distanciaTotal();

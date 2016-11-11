@@ -25,8 +25,6 @@ int main(int argc, char const *argv[]){
 
 	read_options(argc, argv, opcion_greedy, opcion_busqueda, repeticiones, EXP, verbose);
 
-	cerr << " " << opcion_greedy << " " << opcion_busqueda << " " << repeticiones << " " << EXP << " " << endl;
-
 	string primera_linea;
 	getline(cin, primera_linea, '\n');
 
@@ -37,7 +35,7 @@ int main(int argc, char const *argv[]){
 	int capacidad_mochila = entrada_parseada[2];
 
 	// if(EXP){
-	// 	printf("opcion_greedy, opcion_busqueda, cant_gim, cant_poke, cap_mochila, tiempo_armado_grafo, tiempo_greedy, distancia_camino_greedy, tiempo_busqueda, distancia_camino, cant_mejoras, vecinos_totales, tiempo_swap\n");
+	// 	printf("opcion_greedy, opcion_busqueda, cant_gim, cant_gim_mismo_costo, cant_poke, cap_mochila, tiempo_armado_grafo, tiempo_greedy, distancia_camino_greedy, tiempo_busqueda, distancia_camino, cant_mejoras, tiempo_swap, vecinos_prom\n");
 	// }
 	
 	// medimos cuanto tardamos en armar los grafos
@@ -47,12 +45,25 @@ int main(int argc, char const *argv[]){
 	parseo_entrada_busqueda_local(g, gc, cantidad_gimnasios, cantidad_paradas);
 	auto end = ya();
 	double tiempo_armado_grafo = chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count();
+
+	int cant_gim_mismo_costo = 0;
+	int costo_maximo = 0;
+	for(int i = 0; i < cantidad_gimnasios; ++i){
+		if(costo_maximo < gc.iesimoNodo(i).pociones) costo_maximo = gc.iesimoNodo(i).pociones;
+	}
+	vector<unsigned int> gim_con_x_pociones(costo_maximo+1, 0);
+	for(int i = 0; i < cantidad_gimnasios; ++i){
+		gim_con_x_pociones[gc.iesimoNodo(i).pociones]++;
+	}
+	for(unsigned int i = 0; i < gim_con_x_pociones.size(); ++i){
+		if(gim_con_x_pociones[i]>1) cant_gim_mismo_costo++;
+	}
 	
 	for(int i = 0; i < repeticiones; ++i){
 
 		if(verbose) fprintf(stderr, "[Corriendo repeticion %i]\n", i+1);
 
-		EXP_STR = ""+to_string(opcion_greedy)+","+to_string(opcion_busqueda)+","+to_string(cantidad_gimnasios)+","
+		EXP_STR = ""+to_string(opcion_greedy)+","+to_string(opcion_busqueda)+","+to_string(cantidad_gimnasios)+","+to_string(cant_gim_mismo_costo)+","
 			+to_string(cantidad_paradas)+","+to_string(capacidad_mochila)+","+to_string(tiempo_armado_grafo)+",";
 		EXP_STR_AUX = "";
 
@@ -60,6 +71,16 @@ int main(int argc, char const *argv[]){
 		Solucion res = g.tsp_goloso(opcion_greedy, capacidad_mochila);
 		end = ya();
 		double tiempo_greedy = chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count();
+
+		// imprime el resultado para experimentar
+		if(verbose){
+			cerr << "Resultado goloso:" << endl;
+			cerr << fixed << setprecision(2) << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';
+			for(unsigned int i = 0; i < res.ids.size(); ++i){
+				cerr << res.ids[i] << " ";
+			}
+			cerr << endl;
+		}
 
 		EXP_STR += to_string(tiempo_greedy)+","+to_string(res.distancia_recorrida)+",";
 
@@ -75,6 +96,16 @@ int main(int argc, char const *argv[]){
 		double tiempo_busqueda = chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count();
 
 		EXP_STR += to_string(tiempo_busqueda)+","+to_string(res.distancia_recorrida)+","+EXP_STR_AUX;
+
+		// imprime el resultado para experimentar
+		if(verbose){
+			cerr << "Resultado con busqueda local:" << endl;
+			cerr << fixed << setprecision(2) << res.distancia_recorrida << ' ' <<  res.ids.size() - 1 << ' ';
+			for(unsigned int i = 0; i < res.ids.size(); ++i){
+				cerr << res.ids[i] << " ";
+			}
+			cerr << endl;
+		}
 
 		if(EXP){
 			printf("%s\n", EXP_STR.c_str());
