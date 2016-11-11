@@ -47,13 +47,14 @@ bool esCaminoValido(Camino<NodoP>& c, int capacidadMochila) {
 
 int a = 0;
 
-bool swap_pokeparadas(Camino<NodoP>& c, int capacidadMochila){
+bool swap_pokeparadas(Camino<NodoP>& c, int capacidadMochila, unsigned int& vecinos_prom){
 
 	Distancia distanciaOriginal = c.distanciaTotal();
 
 	for(int i = 0; i < c.largo(); ++i){
 		for(int j = i+1; j < c.largo(); ++j){
 			if(c.iesimoElemento(i).t == Pokeparada && c.iesimoElemento(j).t == Pokeparada){
+				vecinos_prom++;
 				c.actualizarDistanciaSwap(i, j);
 				c.swap(i, j);	
 				if((distanciaOriginal > c.distanciaTotal())){
@@ -68,13 +69,14 @@ bool swap_pokeparadas(Camino<NodoP>& c, int capacidadMochila){
 	return false;
 }
 
-bool swap_gimnasios(Camino<NodoP>& c, int capacidadMochila){
+bool swap_gimnasios(Camino<NodoP>& c, int capacidadMochila, unsigned int& vecinos_prom){
 
 	Distancia distanciaOriginal = c.distanciaTotal();
 
-	for(int i = 0; i < c.largo(); ++i) {
-		for(int j = i+1; j < c.largo(); ++j) {
-			if (c.iesimoElemento(i).t == Gimnasio && c.iesimoElemento(j).t == Gimnasio && c.iesimoElemento(i).pociones == c.iesimoElemento(j).pociones) {
+	for(int i = 0; i < c.largo(); ++i){
+		for(int j = i+1; j < c.largo(); ++j){
+			if(c.iesimoElemento(i).t == Gimnasio && c.iesimoElemento(j).t == Gimnasio && c.iesimoElemento(i).pociones == c.iesimoElemento(j).pociones) {
+				vecinos_prom++;
 				c.actualizarDistanciaSwap(i, j);
 				c.swap(i, j);
 
@@ -96,7 +98,7 @@ bool swap_gimnasios(Camino<NodoP>& c, int capacidadMochila){
 // ******************************
 
 // Para los experimentos: 
-// 		EXP_STR_AUX: cant_mejoras, vecinos_total, tiempo_swap
+// 		EXP_STR_AUX: cant_mejoras, tiempo_swap, vecinos_prom
 string EXP_STR_AUX = "";
 
 Solucion busquedaLocal(Solucion res, GrafoCompleto<NodoP>& gc, int capacidad_mochila, int opcion_busqueda){
@@ -112,22 +114,23 @@ Solucion busquedaLocal(Solucion res, GrafoCompleto<NodoP>& gc, int capacidad_moc
 
 	unsigned int cant_mejoras = 0; // para experimentar
 	double tiempo_swap  = 0; // para experimentar
+	unsigned int vecinos_prom = 0; // para experimentar
 
 
 	// itero hasta que no mejoro mas
 	bool mejoraLaSolucion;
 	do {
 
-		cerr << cant_mejoras << endl;
+		// cerr << cant_mejoras << " " << camino.distanciaTotal() << endl;
 
 		auto start = ya();
 		mejoraLaSolucion = false;
 		switch(opcion_busqueda){
 			case 0:
-				mejoraLaSolucion = swap_pokeparadas(camino, capacidad_mochila);
+				mejoraLaSolucion = swap_pokeparadas(camino, capacidad_mochila, vecinos_prom);
 				break;
 			case 1:
-				mejoraLaSolucion = swap_gimnasios(camino, capacidad_mochila);
+				mejoraLaSolucion = swap_gimnasios(camino, capacidad_mochila, vecinos_prom);
 				break;
 		}
 
@@ -141,7 +144,7 @@ Solucion busquedaLocal(Solucion res, GrafoCompleto<NodoP>& gc, int capacidad_moc
 
 	} while(mejoraLaSolucion);
 
-	EXP_STR_AUX += to_string(cant_mejoras)+","+to_string(tiempo_swap)+",";
+	EXP_STR_AUX += to_string(cant_mejoras)+","+to_string(tiempo_swap)+","+to_string(vecinos_prom)+",";
 
 	Solucion s;
 	s.distancia_recorrida = camino.distanciaTotal();

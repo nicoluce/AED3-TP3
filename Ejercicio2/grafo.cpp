@@ -53,8 +53,9 @@ Solucion Grafo::tsp_goloso(unsigned int opcion_primer_nodo, unsigned int capacid
 	// cout << "ID DESPUES DE ENTRAR AL ARREGLO " << _pokeparadas[primer_nodo_indice].id << endl;
 	res.ids.push_back(_pokeparadas[primer_nodo_indice].id);
 	//res.ids.push_back(primer_nodo_indice);
+
 	while(heapnasios.size() > 0) {
-		while(pociones_en_mochila >= heapnasios.top().pociones_necesarias) {
+		while(heapnasios.size() > 0 && pociones_en_mochila >= heapnasios.top().pociones_necesarias) {
 			NodoGimnasio gym = heapnasios.top();
 			res.ids.push_back(gym.id);
 			res.distancia_recorrida += distancia(gym.pos, posicion_actual);

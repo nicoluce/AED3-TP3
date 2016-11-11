@@ -35,7 +35,7 @@ int main(int argc, char const *argv[]){
 	int capacidad_mochila = entrada_parseada[2];
 
 	// if(EXP){
-	// 	printf("opcion_greedy, opcion_busqueda, cant_gim, cant_gim_mismo_costo, cant_poke, cap_mochila, tiempo_armado_grafo, tiempo_greedy, distancia_camino_greedy, tiempo_busqueda, distancia_camino, cant_mejoras, tiempo_swap\n");
+	// 	printf("opcion_greedy, opcion_busqueda, cant_gim, cant_gim_mismo_costo, cant_poke, cap_mochila, tiempo_armado_grafo, tiempo_greedy, distancia_camino_greedy, tiempo_busqueda, distancia_camino, cant_mejoras, tiempo_swap, vecinos_prom\n");
 	// }
 	
 	// medimos cuanto tardamos en armar los grafos

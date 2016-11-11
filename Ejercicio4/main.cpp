@@ -14,6 +14,7 @@ using namespace std;
 #define ya chrono::high_resolution_clock::now
 
 // ./ej4.out <opcion_greedy_primer_nodo> <opcion_greedy_cercanos> <opcion_busqueda> <cantidad_iteraciones> [-m [repeticiones]]
+
 int main(int argc, char const *argv[]){
 	int repeticiones = 1;
 	string medir;
@@ -51,24 +52,34 @@ int main(int argc, char const *argv[]){
 			return 0;
 		}
 
+		Distancia dist_original = s.distancia_recorrida;
+		unsigned int cant_mejoras = 0;
+
 		for(int i = 0; i < cantidad_iteraciones; ++i){
+
+			cerr << "iteracion: " << i << endl;
+
 			Solucion s_prima = g.tsp_goloso_rnd(opcion_greedy_primer_nodo, capacidad_mochila, opcion_greedy_cercanos);
 			s_prima = busquedaLocal(s_prima, gc, capacidad_mochila, opcion_busqueda);
 			if(s_prima.distancia_recorrida < s.distancia_recorrida){
 				s = s_prima;
+				cant_mejoras++;
 			}
 		}
-
 		auto end = ya();
 
-		// imprime el resultado
-		cout << fixed << setprecision(2) << s.distancia_recorrida << ' ' <<  s.ids.size() - 1 << ' ';
-		imprimir_vector(s.ids);
+		Distancia dist_final = s.distancia_recorrida;
 
 		if(medir  == "-m"){
-			cout << "Grafo: " << cantidad_gimnasios << ' ' << cantidad_paradas << ' ' << capacidad_mochila << endl;
-			cout << fixed << setprecision(0);
-			cout << "Tiempo: " << chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count() << endl;
+			// "gimnasios,pokeparadas,mochila,tiempo,distancia original,distancia final,cantidad de mejoras,iteraciones,vecinos"
+			cout << cantidad_gimnasios << ',' << cantidad_paradas << ',' << capacidad_mochila << ','
+				<< chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count() << ','
+				<< dist_original << ',' << dist_final << ',' << cant_mejoras << ',' << cantidad_iteraciones << ',' 
+				<< opcion_greedy_cercanos << endl;
+		} else {
+			// imprime el resultado
+			cout << fixed << setprecision(2) << s.distancia_recorrida << ' ' <<  s.ids.size() - 1 << ' ';
+			imprimir_vector(s.ids);
 		}
 	}
 
