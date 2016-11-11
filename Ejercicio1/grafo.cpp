@@ -61,7 +61,7 @@ void Grafo::recursivo(unsigned int indice_actual, unsigned int pociones_actuales
 	//------------------------------
 
 	// PODA: Si ya se conoce un resultado mejor, corta.
-	if (distancia_recorrida > distancia_resultado && distancia_resultado != -1 || !haySolucion(pociones_actuales)) {
+	if ((distancia_recorrida > distancia_resultado && distancia_resultado != -1) || !haySolucion(pociones_actuales)) {
 		//---- Para experimentacion ----
 		podas++;
 		//------------------------------
