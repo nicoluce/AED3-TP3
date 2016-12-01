@@ -144,7 +144,7 @@ Solucion busquedaLocal(Solucion res, GrafoCompleto<NodoP>& gc, int capacidad_moc
 
 	} while(mejoraLaSolucion);
 
-	EXP_STR_AUX += to_string(cant_mejoras)+","+to_string(tiempo_swap)+","+to_string(vecinos_prom)+",";
+	EXP_STR_AUX += to_string(cant_mejoras)+","+to_string(tiempo_swap)+","+to_string(vecinos_prom);
 
 	Solucion s;
 	s.distancia_recorrida = camino.distanciaTotal();

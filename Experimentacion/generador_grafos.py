@@ -66,7 +66,7 @@ def nodogenerator(lower_bound, upper_bound, distancia_entre_nodos, cantidad_de_g
 		else:
 			distancia_entre_nodos -= 0.1
 
-	cantidad_de_pokeparadas = random.randint(ceil(total_pociones/3.0), ceil(total_pociones/3.0))
+	cantidad_de_pokeparadas = random.randint(int(ceil(total_pociones/3.0)), int(ceil(total_pociones/3.0)))
 
 	posiciones_pokeparadas = list(posiciones_gimnasios)
 	while len(posiciones_pokeparadas) < cantidad_de_gimnasios + cantidad_de_pokeparadas:
@@ -88,9 +88,9 @@ def nodogenerator(lower_bound, upper_bound, distancia_entre_nodos, cantidad_de_g
 	# print posiciones_gimnasios
 	# print posiciones_pokeparadas
 
-	# plt.plot(*zip(*posiciones_gimnasios), marker='o', color='b', ls='')
-	# plt.plot(*zip(*posiciones_pokeparadas), marker='o', color='r', ls='')
-	# plt.show()
+	#plt.plot(*zip(*posiciones_gimnasios), marker='o', color='b', ls='')
+	#plt.plot(*zip(*posiciones_pokeparadas), marker='o', color='r', ls='')
+	#plt.show()
 
 	out_string = str(cantidad_de_gimnasios) + ' ' + str(cantidad_de_pokeparadas) + ' ' + str(max_pocion + 2) + '\n' + out_string
 	return out_string[:-1]
@@ -231,10 +231,12 @@ rango_posiciones = cantidad_de_gimnasios*(cantidad_de_gimnasios*0.4) # 4%
 output_filename = comandos['Output']
 alpha = alpha(cantidad_de_gimnasios)
 
-if cantidad_de_gimnasios < 5:
-	alpha = 0.1
+# if cantidad_de_gimnasios < 5:
+# 	alpha = 0.1
+alpha = 0.02
 rango_posiciones = ceil(rango_posiciones)
 rango_posiciones = max(rango_posiciones, 10)
+
 if comandos['Modo'] == 'random':
 	generar_random(cantidad_de_gimnasios, alpha, rango_posiciones, filename=output_filename)
 elif comandos['Modo'] == 'esquina':
