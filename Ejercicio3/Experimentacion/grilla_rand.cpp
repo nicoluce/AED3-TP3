@@ -20,14 +20,28 @@ int main(int argc, char const *argv[]){
 	int capMochila = atoi(argv[5]);
 	int proporcionPokeParadas = atoi(argv[6]);
 
+	bool matriz[alto][ancho];
+	for(int i = 0; i < alto; ++i){
+		for(int j = 0; j < ancho; ++j){
+			matriz[i][j] = false;
+		}
+	}
+
 	string res = "";
 	int cantPocMinimasParaGanar = 0;
 
-	srand(time(NULL));
+	unsigned int seed;
+	cin >> seed;
+	srand(seed);
 
 	for(int i=0; i< cantGim; i++){
 		int x = rand() % ancho + 1;
 		int y = rand() % alto + 1;
+		while(matriz[y-1][x-1]){
+			x = rand() % ancho + 1;
+			y = rand() % alto + 1;
+		}
+		matriz[y-1][x-1] = true;
 		int p = rand() % maxPociones + 1;
 		cantPocMinimasParaGanar += p;
 		res = res + to_string(x) + " " + to_string(y) + " " + to_string(p) + "\n";
@@ -39,6 +53,11 @@ int main(int argc, char const *argv[]){
 	for(int i=0; i<cantPokeMinimasParaGanar*proporcionPokeParadas; i++){
 		int x = rand() % ancho + 1;
 		int y = rand() % alto + 1;
+		while(matriz[y-1][x-1]){
+			x = rand() % ancho + 1;
+			y = rand() % alto + 1;
+		}
+		matriz[y-1][x-1] = true;
 		res = res + to_string(x) + " " + to_string(y) + "\n";
 	}
 

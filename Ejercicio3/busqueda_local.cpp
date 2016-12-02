@@ -1,4 +1,6 @@
 #include "busqueda_local.h"
+#include <limits>
+#define EPSILON 0.0001 // para comparar doubles
 
 // ******************************
 // Parseo Entrada
@@ -57,8 +59,10 @@ bool swap_pokeparadas(Camino<NodoP>& c, int capacidadMochila, unsigned int& veci
 				vecinos_prom++;
 				c.actualizarDistanciaSwap(i, j);
 				c.swap(i, j);	
-				if((distanciaOriginal > c.distanciaTotal())){
-					return true;
+				if(distanciaOriginal > c.distanciaTotal()){
+					if(distanciaOriginal - c.distanciaTotal() > EPSILON){
+						return true;
+					}
 				}
 				c.actualizarDistanciaSwap(i, j);
 				c.swap(i, j); // vuelvo a swapear para no modificar al c original
@@ -79,9 +83,10 @@ bool swap_gimnasios(Camino<NodoP>& c, int capacidadMochila, unsigned int& vecino
 				vecinos_prom++;
 				c.actualizarDistanciaSwap(i, j);
 				c.swap(i, j);
-
-				if((distanciaOriginal > c.distanciaTotal())){
-					return true;
+				if(distanciaOriginal > c.distanciaTotal()){
+					if(distanciaOriginal - c.distanciaTotal() > EPSILON){
+						return true;
+					}
 				}
 				c.actualizarDistanciaSwap(i, j);
 				c.swap(i, j); // vuelvo a swapear para no modificar al c original
@@ -144,7 +149,7 @@ Solucion busquedaLocal(Solucion res, GrafoCompleto<NodoP>& gc, int capacidad_moc
 
 	} while(mejoraLaSolucion);
 
-	EXP_STR_AUX += to_string(cant_mejoras)+","+to_string(tiempo_swap)+","+to_string(vecinos_prom)+",";
+	EXP_STR_AUX += to_string(cant_mejoras)+","+to_string(tiempo_swap)+","+to_string(vecinos_prom);
 
 	Solucion s;
 	s.distancia_recorrida = camino.distanciaTotal();

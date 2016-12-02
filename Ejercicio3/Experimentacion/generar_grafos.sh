@@ -33,8 +33,12 @@
 CARPETA='input'
 
 # rm -r $CARPETA
-mkdir $CARPETA
+# mkdir $CARPETA
 
 for (( i = $1; i <= $2; i += $3 )); do
-	./grilla_rand $4 $5 $i $6 $7 $8 > $CARPETA/g_rand_N$i-W$4-H$5-MP$6-Mochila$7-PP$8
+	echo $i;
+	for (( j = 1; j <= 5; j += 1 )); do
+		echo "   "+$j
+		./random_seed | ./grilla_rand $4 $5 $i $6 $7 $8 > $CARPETA/g_rand_N$i-W$4-H$5-MP$6-Mochila$7-PP$8-$j
+	done
 done
