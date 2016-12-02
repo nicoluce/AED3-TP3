@@ -95,7 +95,7 @@ int main(int argc, char const *argv[]){
 		end = ya();
 		double tiempo_busqueda = chrono::duration_cast<chrono::duration<double, std::nano>>(end-start).count();
 
-		EXP_STR += to_string(tiempo_busqueda)+","+to_string(res.distancia_recorrida)+","+EXP_STR_AUX;
+		EXP_STR += to_string(tiempo_busqueda)+","+to_string(res.distancia_recorrida)+","+EXP_STR_AUX+","+to_string(res.ids.size()-1);
 
 		// imprime el resultado para experimentar
 		if(verbose){
