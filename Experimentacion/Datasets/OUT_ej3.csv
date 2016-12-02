@@ -1,4 +1,4 @@
-opcion_greedy,opcion_busqueda,cant_gim,cant_gim_mismo_costo,cant_poke,cap_mochila,tiempo_armado_grafo,tiempo_greedy,distancia_camino_greedy,tiempo_busqueda,distancia_camino,cant_mejoras,tiempo_swap,vecinos_prom
+opcion_greedy,opcion_busqueda,cant_gim,cant_gim_mismo_costo,cant_poke,cap_mochila,tiempo_armado_grafo,tiempo_greedy,distancia_camino_greedy,tiempo_busqueda,Distancia,cant_mejoras,tiempo_swap,vecinos_prom
 1,0,2,0,1,4,16945.000000,5913.000000,11.180340,12210.000000,11.180340,0,321.000000,0
 1,0,2,0,1,4,16945.000000,3550.000000,11.180340,8958.000000,11.180340,0,221.000000,0
 1,0,2,0,1,4,16945.000000,3113.000000,11.180340,8271.000000,11.180340,0,220.000000,0
